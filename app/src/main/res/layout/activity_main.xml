@@ -128,14 +128,13 @@
             </GridLayout>
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/activity_margin_10dp"
             android:layout_marginEnd="@dimen/activity_margin_10dp"
             >
-
-
 
         <GridLayout
             android:layout_width="match_parent"
