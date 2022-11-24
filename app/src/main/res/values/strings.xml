@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Task1</string>
+    <string name="policy_term">Policy Term : 28 Years</string>
+    <string name="till_you">Till You Turn : 30</string>
+    <string name="download">Download Brochure</string>
+    <string name="priceInc">Price Increase Soon</string>
+    <string name="kshButtonTxt">ksh 7,087/Yr</string>
+    <string name="cover">(Ksh 10 Million Cover)</string>
+    <string name="limited_pay">Limited Pay : Save upto 39% more</string>
+    <string name="claim_settlement">3hrs Claim Settlement</string>
+    <string name="lumpsum">lumpsum ksh 10,000,000 on death</string>
+    <string name="income">Monthly income : Nill</string>
+    <string name="pre_medical">Pre-medical test Required : Yes</string>
+    <string name="filter">Filter</string>
+    <string name="compare_plans">Compare Plans</string>
+    <string name="payment_type">Payment Type</string>
+    <string name="policy_term_in_filter">Policy Term</string>
+    <string name="coverage_in_filter">Coverage</string>
+    <string name="million_10">10 Million</string>
+    <string name="million_5">5 Million</string>
+    <string name="million_3">3 Million</string>
+    <string name="monthly">Monthly</string>
+    <string name="quarterly">Quarterly</string>
+    <string name="yearly">Yearly</string>
+    <string name="years_28">28 Years</string>
+    <string name="years_20">20 Years</string>
+    <string name="years_15">15 Years</string>
+    <string name="close"><font color="#ff0300">X</font></string>
+
+    <string name="company_name1">Heritage</string>
+    <string name="company_name2">GA Insurance</string>
+
+
+</resources>

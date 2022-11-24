@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="payment_array">
+        <item><font color="#3d58e5">Monthly</font></item>
+        <item><font color="#3d58e5">Quarterly</font></item>
+        <item><font color="#3d58e5">Yearly</font></item>
+    </string-array>
+</resources>

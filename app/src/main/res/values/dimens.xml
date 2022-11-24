@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+
+    <dimen name="activity_margin_10sp">10sp</dimen>
+    <dimen name="activity_margin_9sp">9sp</dimen>
+    <dimen name="activity_margin_6sp">6sp</dimen>
+    <dimen name="activity_margin_12sp">12sp</dimen>
+
+    <dimen name="activity_margin_20sp">20sp</dimen>
+
+
+
+
+    <dimen name="activity_margin_2dp">2dp</dimen>
+    <dimen name="activity_margin_150dp">150dp</dimen>
+    <dimen name="activity_margin_110dp">110dp</dimen>
+    <dimen name="activity_margin_90dp">90dp</dimen>
+    <dimen name="activity_margin_130dp">130dp</dimen>
+    <dimen name="activity_margin_137dp">137dp</dimen>
+    <dimen name="activity_margin_230dp">230dp</dimen>
+    <dimen name="activity_margin_5dp">5dp</dimen>
+    <dimen name="activity_margin_6dp">6dp</dimen>
+    <dimen name="activity_margin_10dp">10dp</dimen>
+    <dimen name="activity_margin_14dp">14dp</dimen>
+    <dimen name="activity_margin_15dp">15dp</dimen>
+    <dimen name="activity_margin_45dp">45dp</dimen>
+    <dimen name="activity_margin_12dp">12dp</dimen>
+    <dimen name="activity_margin__7dp">7dp</dimen>
+    <dimen name="activity_margin_16dp">16dp</dimen>
+    <dimen name="activity_margin_8dp">8dp</dimen>
+    <dimen name="activity_margin_120dp">120dp</dimen>
+    <dimen name="activity_margin_250dp">250dp</dimen>
+    <dimen name="activity_margin_55dp">55dp</dimen>
+    <dimen name="activity_margin_27dp">27dp</dimen>
+    <dimen name="activity_margin_25dp">25dp</dimen>
+    <dimen name="activity_margin_40dp">40dp</dimen>
+    <dimen name="activity_margin_20dp">20dp</dimen>
+    <dimen name="activity_margin_17dp">17dp</dimen>
+    <dimen name="activity_margin_60dp">60dp</dimen>
+    <dimen name="activity_margin_30dp">30dp</dimen>
+    <dimen name="activity_margin_140dp">140dp</dimen>
+    <dimen name="activity_margin_180dp">180dp</dimen>
+    <dimen name="activity_margin_200dp">200dp</dimen>
+    <dimen name="activity_margin_220dp">220dp</dimen>
+    <dimen name="activity_margin_26dp">26dp</dimen>
+    <dimen name="activity_margin_minus55dp">-55dp</dimen>
+    <dimen name="activity_margin_50dp">50dp</dimen>
+    <dimen name="activity_margin_22dp">22dp</dimen>
+    <dimen name="activity_margin_18dp">18dp</dimen>
+    <dimen name="activity_margin_100dp">100dp</dimen>
+    <dimen name="activity_margin_70dp">70dp</dimen>
+    <dimen name="activity_margin_4dp">4dp</dimen>
+    <dimen name="activity_margin_80dp">80dp</dimen>
+    <dimen name="activity_margin_19dp">19dp</dimen>
+    <dimen name="activity_margin_24dp">24dp</dimen>
+    <dimen name="activity_margin_35dp">35dp</dimen>
+
+
+
+
+
+</resources>
