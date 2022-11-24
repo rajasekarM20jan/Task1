@@ -1,11 +1,17 @@
 package com.example.task1;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.graphics.BlurMaskFilter;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -14,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
 
@@ -28,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     ImageView close;
     GridView gridView;
+    ConstraintLayout blur;
     Spinner coverageSpinner,policyTermSpinner,paymentSpinner;
+
 
     ArrayList<ComparisonListModel> comparisonList;
     ArrayList<ListModel> list;
@@ -39,12 +48,47 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         listView=findViewById(R.id.listView1);
         comparePlans=findViewById(R.id.comparePlans);
+        blur=findViewById(R.id.blurLayout);
         coverageSpinner=findViewById(R.id.coverageSpinner);
         policyTermSpinner=findViewById(R.id.policyTermSpinner);
         paymentSpinner=findViewById(R.id.paymentTypeSpinner);
         list=new ArrayList<>();
         comparisonList=new ArrayList<>();
         callData();
+        getOTP();
+
+        BlurMaskFilter blurMaskFilter= new BlurMaskFilter(20, BlurMaskFilter.Blur.INNER);
+
+
+    }
+
+    private void getOTP() {
+
+        try{
+            LayoutInflater inflater=(LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View v=inflater.inflate(R.layout.otp_pop_up,null,false);
+            Dialog d=new Dialog(MainActivity.this);
+            d.setContentView(v);
+            d.create();
+            d.setCancelable(false);
+            blur.setVisibility(View.VISIBLE);
+            d.show();
+
+
+
+            Button submit= v.findViewById(R.id.submitButtonInOTP);
+            submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    blur.setVisibility(View.GONE);
+                    d.dismiss();
+                }
+            });
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -113,13 +157,17 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
+
             try {
                 comparePlans.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         LayoutInflater inflater=(LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                        PopupWindow pw=new PopupWindow(inflater.inflate(R.layout.pop_up_layout,null,false), WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.MATCH_PARENT,true);
-                        pw.showAtLocation(findViewById(R.id.main), Gravity.CENTER,0,0);
+                        PopupWindow pw=new PopupWindow(inflater.inflate(R.layout.pop_up_layout,null,false)
+                                , WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.MATCH_PARENT,true);
+                        pw.showAtLocation(findViewById(R.id.main), Gravity.BOTTOM,0,0);
+
 
                         close=pw.getContentView().findViewById(R.id.close);
                         gridView=pw.getContentView().findViewById(R.id.gridview);
@@ -146,4 +194,5 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 }

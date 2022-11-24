@@ -31,7 +31,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="@dimen/activity_margin_110dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/activity_margin_60dp"
                     android:orientation="vertical"
                     android:layout_gravity="center|start">
@@ -63,7 +63,7 @@
                     android:background="@drawable/dotted_vertical_line" />
 
                 <LinearLayout
-                    android:layout_width="@dimen/activity_margin_110dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/activity_margin_60dp"
                     android:orientation="vertical"
                     android:gravity="center"
@@ -95,7 +95,7 @@
                     android:background="@drawable/dotted_vertical_line" />
 
                 <LinearLayout
-                    android:layout_width="@dimen/activity_margin_120dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/activity_margin_60dp"
                     android:layout_gravity="end|center"
                     android:layout_marginStart="@dimen/activity_margin_5dp"
@@ -211,9 +211,13 @@
     </LinearLayout>
 
 
-
-
-
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/blurLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/foggy_white"
+        android:visibility="invisible"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,9 +6,11 @@
 
     <dimen name="activity_margin_10sp">10sp</dimen>
     <dimen name="activity_margin_9sp">9sp</dimen>
+    <dimen name="activity_margin_7sp">7sp</dimen>
+    <dimen name="activity_margin_8sp">8sp</dimen>
     <dimen name="activity_margin_6sp">6sp</dimen>
     <dimen name="activity_margin_12sp">12sp</dimen>
-
+    <dimen name="activity_margin_14sp">14sp</dimen>
     <dimen name="activity_margin_20sp">20sp</dimen>
 
 
@@ -57,6 +59,10 @@
     <dimen name="activity_margin_19dp">19dp</dimen>
     <dimen name="activity_margin_24dp">24dp</dimen>
     <dimen name="activity_margin_35dp">35dp</dimen>
+
+
+    <dimen name="activity_margin_300dp">300dp</dimen>
+    <dimen name="activity_margin_350dp">350dp</dimen>
 
 
 

@@ -29,6 +29,11 @@
 
     <string name="company_name1">Heritage</string>
     <string name="company_name2">GA Insurance</string>
+    <string name="please_enter_otp">Please enter the OTP that you have received to your mobile number <font color="#4353ea">+254 786678567</font> </string>
+    <string name="enter_your_otp_here">Enter your OTP here</string>
+    <string name="submit">Submit</string>
+    <string name="didn_t_receive_otp">Didn\'t Receive OTP?</string>
+    <string name="resend_otp">Resend OTP.</string>
 
 
 </resources>
