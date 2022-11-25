@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
     //Method for getting OTP Pop up
     //Using Layout inflater and Dialog
     private void getOTP() {
-
         try{
             LayoutInflater inflater=(LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             //inflating the custom layout otp_pop_up
@@ -132,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
     }
 
     private void getTimer() {
@@ -152,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                     didNotReceive.setVisibility(View.VISIBLE);
                 }
             }.start();
-        }catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
         }
     }
@@ -258,7 +255,8 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-        }catch (Exception e){
+        }
+        catch (Exception e){
             e.printStackTrace();
         }
     }
