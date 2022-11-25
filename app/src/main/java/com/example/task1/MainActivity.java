@@ -85,41 +85,49 @@ public class MainActivity extends AppCompatActivity {
             resendOtp=v.findViewById(R.id.resendOtp);
             timerTextView=v.findViewById(R.id.timerTextView);
             getTimer();
-            resendOtp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    resendOtp.setVisibility(View.INVISIBLE);
-                    didNotReceive.setVisibility(View.INVISIBLE);
-                    timerTextView.setVisibility(View.VISIBLE);
-                    getTimer();
-                }
-            });
+            try {
+                resendOtp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        resendOtp.setVisibility(View.INVISIBLE);
+                        didNotReceive.setVisibility(View.INVISIBLE);
+                        timerTextView.setVisibility(View.VISIBLE);
+                        getTimer();
+                    }
+                });
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             EditText getOtp=v.findViewById(R.id.editTextInOTP);
             Button submit= v.findViewById(R.id.submitButtonInOTP);
             //setting up the onclick listener to the submit button
-            submit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //if length of the otp is less than 3 an alert dialog will be created
-                    // else will be proceeded with next iterations
-                    if(getOtp.length()>=3) {
-                        //making the blur layout to be gone
-                        blur.setVisibility(View.GONE);
-                        d.dismiss();
-                    }else{
-                        AlertDialog.Builder alert= new AlertDialog.Builder(MainActivity.this);
-                        alert.setCancelable(false);
-                        alert.setMessage(R.string.alert_for_otp);
-                        alert.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        });
-                        alert.show();
+            try {
+                submit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //if length of the otp is less than 3 an alert dialog will be created
+                        // else will be proceeded with next iterations
+                        if (getOtp.length() >= 3) {
+                            //making the blur layout to be gone
+                            blur.setVisibility(View.GONE);
+                            d.dismiss();
+                        } else {
+                            AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                            alert.setCancelable(false);
+                            alert.setMessage(R.string.alert_for_otp);
+                            alert.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            });
+                            alert.show();
+                        }
                     }
-                }
-            });
+                });
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
         }catch (Exception e){
             e.printStackTrace();
@@ -129,19 +137,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getTimer() {
-        new CountDownTimer(60000,1000){
+        try {
+            new CountDownTimer(60000, 1000) {
 
-            @Override
-            public void onTick(long l) {
-                timerTextView.setText(new SimpleDateFormat("00:ss").format(new Date(l)));
-            }
-            @Override
-            public void onFinish() {
-                timerTextView.setVisibility(View.INVISIBLE);
-                resendOtp.setVisibility(View.VISIBLE);
-                didNotReceive.setVisibility(View.VISIBLE);
-            }
-        }.start();
+                @Override
+                public void onTick(long l) {
+                    timerTextView.setText(new SimpleDateFormat("00:ss").format(new Date(l)));
+                }
+
+                @Override
+                public void onFinish() {
+                    timerTextView.setVisibility(View.INVISIBLE);
+                    resendOtp.setVisibility(View.VISIBLE);
+                    didNotReceive.setVisibility(View.VISIBLE);
+                }
+            }.start();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     // method for getting Data into the custom list view and the spinner and for the custom compare plans

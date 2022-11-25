@@ -46,15 +46,22 @@ public class CustomComparisonAdapter extends ArrayAdapter {
         count=0;
         LayoutInflater inflater=LayoutInflater.from(context);
         View view=inflater.inflate(resource,null);
-        companyLogo=view.findViewById(R.id.comparisonImageView);
-        companyName=view.findViewById(R.id.comparisonTextView);
-        checkBox=view.findViewById(R.id.comparisonCheckbox);
-
+        try {
+            companyLogo = view.findViewById(R.id.comparisonImageView);
+            companyName = view.findViewById(R.id.comparisonTextView);
+            checkBox = view.findViewById(R.id.comparisonCheckbox);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         product=myList.get(position);
 
-        companyLogo.setImageDrawable(getContext().getDrawable(product.getCompanyLogo()));
-        companyName.setText(product.getCompanyName());
-
+        try {
+            companyLogo.setImageDrawable(getContext().getDrawable(product.getCompanyLogo()));
+            companyName.setText(product.getCompanyName());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         try{
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

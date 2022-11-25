@@ -44,37 +44,43 @@ public class CustomAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflator=LayoutInflater.from(context);
-        View  view=inflator.inflate(resource,null);
-        policyTerm=view.findViewById(R.id.policyTerm);
-        tillYouTurn=view.findViewById(R.id.tillYouTurn);
-        download=view.findViewById(R.id.download);
-        cover=view.findViewById(R.id.coverTxtView);
-        claim=view.findViewById(R.id.claim);
-        priceInc=view.findViewById(R.id.priceInc);
-        limitedPay=view.findViewById(R.id.limitedPay);
-        income=view.findViewById(R.id.income);
-        lumpsumAmt=view.findViewById(R.id.lumpsumAmt);
-        preMedical=view.findViewById(R.id.preMedical);
-        button1=view.findViewById(R.id.button1);
-        imageView=view.findViewById(R.id.imageView);
+            LayoutInflater inflator = LayoutInflater.from(context);
+            View view = inflator.inflate(resource, null);
+        try {
+            policyTerm = view.findViewById(R.id.policyTerm);
+            tillYouTurn = view.findViewById(R.id.tillYouTurn);
+            download = view.findViewById(R.id.download);
+            cover = view.findViewById(R.id.coverTxtView);
+            claim = view.findViewById(R.id.claim);
+            priceInc = view.findViewById(R.id.priceInc);
+            limitedPay = view.findViewById(R.id.limitedPay);
+            income = view.findViewById(R.id.income);
+            lumpsumAmt = view.findViewById(R.id.lumpsumAmt);
+            preMedical = view.findViewById(R.id.preMedical);
+            button1 = view.findViewById(R.id.button1);
+            imageView = view.findViewById(R.id.imageView);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         product=myList.get(position);
 
-        policyTerm.setText(product.getPolicyTerm());
-        tillYouTurn.setText(product.getTillYouTurn());
-        download.setText(product.getDownload());
-        cover.setText(product.getCover());
-        claim.setText(product.getClaimSettlement());
-        priceInc.setText(product.getPriceInc());
-        limitedPay.setText(product.getLimitedPay());
-        income.setText(product.getMonthlyIncome());
-        lumpsumAmt.setText(product.getLumpsum());
-        preMedical.setText(product.getPremedical());
-        button1.setText(product.getKshButtonTxt());
-        imageView.setImageDrawable(getContext().getDrawable(product.getDrawableID()));
-
-
+        try {
+            policyTerm.setText(product.getPolicyTerm());
+            tillYouTurn.setText(product.getTillYouTurn());
+            download.setText(product.getDownload());
+            cover.setText(product.getCover());
+            claim.setText(product.getClaimSettlement());
+            priceInc.setText(product.getPriceInc());
+            limitedPay.setText(product.getLimitedPay());
+            income.setText(product.getMonthlyIncome());
+            lumpsumAmt.setText(product.getLumpsum());
+            preMedical.setText(product.getPremedical());
+            button1.setText(product.getKshButtonTxt());
+            imageView.setImageDrawable(getContext().getDrawable(product.getDrawableID()));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         return  view;
     }
