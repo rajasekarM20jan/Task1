@@ -1,9 +1,12 @@
 package com.example.task1;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.BlurMaskFilter;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +25,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import adapter.CustomAdapter;
 import adapter.CustomComparisonAdapter;
@@ -30,8 +35,8 @@ import model.ComparisonListModel;
 import model.ListModel;
 
 public class MainActivity extends AppCompatActivity {
-
-    TextView comparePlans;
+    //declaration of variables and layout fields
+    TextView comparePlans,didNotReceive,resendOtp,timerTextView;
     ListView listView;
     ImageView close;
     GridView gridView;
@@ -46,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //initialization of variables and layout fields
         listView=findViewById(R.id.listView1);
         comparePlans=findViewById(R.id.comparePlans);
         blur=findViewById(R.id.blurLayout);
@@ -57,31 +63,61 @@ public class MainActivity extends AppCompatActivity {
         callData();
         getOTP();
 
-        BlurMaskFilter blurMaskFilter= new BlurMaskFilter(20, BlurMaskFilter.Blur.INNER);
-
-
     }
 
+    //Method for getting OTP Pop up
+    //Using Layout inflater and Dialog
     private void getOTP() {
 
         try{
             LayoutInflater inflater=(LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            //inflating the custom layout otp_pop_up
             View v=inflater.inflate(R.layout.otp_pop_up,null,false);
             Dialog d=new Dialog(MainActivity.this);
+            //setting the pop-up layout to Dialog d
             d.setContentView(v);
             d.create();
             d.setCancelable(false);
+            // making layout blur to be visible.
             blur.setVisibility(View.VISIBLE);
             d.show();
-
-
-
+            didNotReceive=v.findViewById(R.id.didntReceiveOtp);
+            resendOtp=v.findViewById(R.id.resendOtp);
+            timerTextView=v.findViewById(R.id.timerTextView);
+            getTimer();
+            resendOtp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    resendOtp.setVisibility(View.INVISIBLE);
+                    didNotReceive.setVisibility(View.INVISIBLE);
+                    timerTextView.setVisibility(View.VISIBLE);
+                    getTimer();
+                }
+            });
+            EditText getOtp=v.findViewById(R.id.editTextInOTP);
             Button submit= v.findViewById(R.id.submitButtonInOTP);
+            //setting up the onclick listener to the submit button
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    blur.setVisibility(View.GONE);
-                    d.dismiss();
+                    //if length of the otp is less than 3 an alert dialog will be created
+                    // else will be proceeded with next iterations
+                    if(getOtp.length()>=3) {
+                        //making the blur layout to be gone
+                        blur.setVisibility(View.GONE);
+                        d.dismiss();
+                    }else{
+                        AlertDialog.Builder alert= new AlertDialog.Builder(MainActivity.this);
+                        alert.setCancelable(false);
+                        alert.setMessage(R.string.alert_for_otp);
+                        alert.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        alert.show();
+                    }
                 }
             });
 
@@ -92,9 +128,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void getTimer() {
+        new CountDownTimer(60000,1000){
+
+            @Override
+            public void onTick(long l) {
+                timerTextView.setText(new SimpleDateFormat("00:ss").format(new Date(l)));
+            }
+            @Override
+            public void onFinish() {
+                timerTextView.setVisibility(View.INVISIBLE);
+                resendOtp.setVisibility(View.VISIBLE);
+                didNotReceive.setVisibility(View.VISIBLE);
+            }
+        }.start();
+    }
+
+    // method for getting Data into the custom list view and the spinner and for the custom compare plans
+    // compare plans is being a pop-up window by use of Layout inflater and Pop up window class
     private void callData(){
         try {
             try {
+                //adding the data to the list model
                 list.add(new ListModel(getString(R.string.policy_term), getString(R.string.till_you),
                         getString(R.string.claim_settlement), getString(R.string.lumpsum),
                         getString(R.string.income), getString(R.string.pre_medical),
@@ -195,4 +250,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //closing the application
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+    }
 }

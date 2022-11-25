@@ -34,6 +34,8 @@
     <string name="submit">Submit</string>
     <string name="didn_t_receive_otp">Didn\'t Receive OTP?</string>
     <string name="resend_otp">Resend OTP.</string>
+    <string name="alert_for_otp">Please Enter your valid One Time Password</string>
+    <string name="ok"><font color="#231cff">OK</font></string>
 
 
 </resources>

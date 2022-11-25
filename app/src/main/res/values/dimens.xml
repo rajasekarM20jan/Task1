@@ -60,7 +60,7 @@
     <dimen name="activity_margin_24dp">24dp</dimen>
     <dimen name="activity_margin_35dp">35dp</dimen>
 
-
+    <dimen name="activity_margin_205dp">205dp</dimen>
     <dimen name="activity_margin_300dp">300dp</dimen>
     <dimen name="activity_margin_350dp">350dp</dimen>
 
