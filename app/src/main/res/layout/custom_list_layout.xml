@@ -274,17 +274,17 @@
                         tools:ignore="SmallSp" />
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
+                <android.widget.Button
+                    android:layout_width="@dimen/activity_margin_150dp"
                     android:layout_height="@dimen/activity_margin_12dp"
-                    android:layout_marginStart="@dimen/activity_margin_30dp"
-                    android:layout_marginEnd="@dimen/activity_margin_30dp"
+                    android:layout_marginTop="@dimen/activity_margin_8dp"
+                    android:layout_gravity="center"
                     android:background="@drawable/view_more_bg"
                     android:fontFamily="@font/latinotypeantartidaroundedmedium"
                     android:gravity="center"
-                    android:text="view more"
+                    android:text="@string/view_more"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/activity_margin_10sp" />
+                    android:textSize="@dimen/activity_margin_9sp" />
 
 
             </LinearLayout>
