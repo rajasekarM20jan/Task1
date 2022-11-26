@@ -22,7 +22,7 @@
     <EditText
         android:id="@+id/editTextInOTP"
         android:layout_width="@dimen/activity_margin_250dp"
-        android:layout_height="@dimen/activity_margin_30dp"
+        android:layout_height="@dimen/activity_margin_35dp"
         android:layout_marginTop="@dimen/activity_margin_40dp"
         android:background="@drawable/edit_text"
         android:gravity="center"
