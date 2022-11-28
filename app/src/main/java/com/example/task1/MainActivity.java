@@ -44,6 +44,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -86,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     String[] coverageArray;
     Spinner coverageSpinner,policyTermSpinner,paymentSpinner;
 
-    int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 0;
     ArrayList<ComparisonListModel> comparisonList;
     ArrayList<ListModel> list;
 
@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         getOTP();
 
 
+        resultData=getAllCoverageAmounts(MainActivity.this);
 
         coverageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 getLocation();
                 String Data=InsertMobileparameters(MainActivity.this);
                 System.out.println("1234567890 "+Data);
-                getCoverage(Data);
+                getCoverage(Data,resultData);
             }
 
             @Override
@@ -132,15 +133,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     }
 
-    private void getCoverage(String data) {
+    private void getCoverage(String data,String body) {
         try{
             OkHttpClient client=new OkHttpClient();
             String url=getString(R.string.base_url)+"/Coverage/GetAllCoverageAmount";
 
-            RequestBody rb= RequestBody.create(MediaType.parse("application/json; charset=utf-8"),data);
+            RequestBody rb= RequestBody.create(MediaType.parse("application/json; charset=utf-8"),body);
 
             Request request = new Request.Builder()
-                    .url("https://uat-integrationportal.insure.digital/api/v1/ip/ti/Coverage/GetAllCoverageAmount")
+                    .url(url)
+                    .addHeader("clientInfo",data)
+                    .addHeader("fingerprint","123456")
                     .post(rb)
                     .build();
 
@@ -292,7 +295,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 e.printStackTrace();
             }
 
-            coverageArray = new String[]{getString(R.string.million_10), getString(R.string.million_5), getString(R.string.million_3)};
+            coverageArray = new String[]{getString(R.string.k_250),getString(R.string.k_300),
+                    getString(R.string.k_500),getString(R.string.million_1),getString(R.string.million_10)};
 
             ArrayAdapter arrayAdapter1 = new ArrayAdapter(MainActivity.this, R.layout.custom_spinner_layout, coverageArray);
             try {
@@ -446,6 +450,33 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             }
         });
+    }
+
+
+    public static String getAllCoverageAmounts(Context context){
+        try{
+            JsonArray jsonArray=new JsonArray();
+
+            int[] a=new int[]{250000,300000,500000,1000000,10000000};
+            String[]b=new String[]{"250k","300k","500k","1 Million","10 Million"};
+
+            for(int i=0;i<a.length;i++){
+                JsonObject obj=new JsonObject();
+                obj.addProperty("coverageAmount",a[i]);
+                obj.addProperty("coverageAmountText",b[i]);
+                jsonArray.add(obj);
+            }
+            System.out.println("My Coverage Amount array : "+jsonArray);
+            JsonObject jobj=new JsonObject();
+            jobj.add("getAllCoverageAmount", jsonArray);
+            System.out.println("My Coverage Amount object : "+jobj);
+
+            String myCoverageAmount= jobj.toString();
+            return myCoverageAmount;
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
     }
 
 

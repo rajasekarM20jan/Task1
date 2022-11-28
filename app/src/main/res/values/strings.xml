@@ -17,8 +17,7 @@
     <string name="policy_term_in_filter">Policy Term</string>
     <string name="coverage_in_filter">Coverage</string>
     <string name="million_10">10 Million</string>
-    <string name="million_5">5 Million</string>
-    <string name="million_3">3 Million</string>
+    <string name="million_1">1 Million</string>
     <string name="monthly">Monthly</string>
     <string name="quarterly">Quarterly</string>
     <string name="yearly">Yearly</string>
@@ -38,6 +37,9 @@
     <string name="ok"><font color="#231cff">OK</font></string>
     <string name="view_more">View more</string>
     <string name="base_url">https://uat-integrationportal.insure.digital/api/v1/ip/ti</string>
+    <string name="k_250">250k</string>
+    <string name="k_300">300k</string>
+    <string name="k_500">500k</string>
 
 
 </resources>
