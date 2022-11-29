@@ -65,6 +65,7 @@ import java.util.concurrent.TimeUnit;
 import adapter.CustomAdapter;
 import adapter.CustomComparisonAdapter;
 import model.ComparisonListModel;
+import model.GetAllCoverageAmount;
 import model.ListModel;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -88,10 +89,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     GridView gridView;
     ConstraintLayout blur;
     String resultData;
-    String[] coverageArray;
+    ArrayList coverageArray;
     static String uniqueidval;
     Spinner coverageSpinner,policyTermSpinner,paymentSpinner;
-
+    ArrayList<GetAllCoverageAmount> getCoverageAmount;
     ArrayList<ComparisonListModel> comparisonList;
     ArrayList<ListModel> list;
 
@@ -109,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         policyTermSpinner = findViewById(R.id.policyTermSpinner);
         paymentSpinner = findViewById(R.id.paymentTypeSpinner);
         list = new ArrayList<>();
+        getCoverageAmount=new ArrayList<>();
         comparisonList = new ArrayList<>();
         callData();
         getOTP();
@@ -116,9 +118,164 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         getLocation();
         InsertMobileparameters(MainActivity.this);
 
+        OTPValidate();
+        getAllCoverageAmount();
+
+
+        coverageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                System.out.println("Selected value is : "+getCoverageAmount.get(i).getCoverageAmountText());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
-    public void MobileActionlog(Context context)
+    public void OTPValidate(){
+
+            Thread thread = new Thread(new Runnable() {
+
+                public void run() {
+
+                    String postURL = getString(R.string.base_url) +"https://uat-integrationportal.insure.digital/api/v1/ip/uad/Account/Login";
+                    final MediaType JSON
+                            = MediaType.parse("application/json; charset=utf-8");
+                    OkHttpClient client = new OkHttpClient.Builder()
+                            .connectTimeout(120, TimeUnit.SECONDS)
+                            .writeTimeout(120, TimeUnit.SECONDS)
+                            .readTimeout(120, TimeUnit.SECONDS)
+                            .build();
+                    JsonObject Details = new JsonObject();
+                    String insertString = Details.toString();
+                    RequestBody body = RequestBody.create(JSON, insertString);
+                    Request request = new Request.Builder()
+                            .url(postURL)
+                            .header("fingerprint","79f59867dce4e2910619d92186c090a9")
+                            .header("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIyYzExZGE0OC0wMjljLTRiODgtOTI2Yi1jODViNTI0ZmFmZTMiLCJuYmYiOjE2Njk3MTQ5NDQsImV4cCI6MTY2OTcxODU0NCwiaWF0IjoxNjY5NzE0OTQ0LCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.W7DGRcz2hdFxwXOeGmt9mlRoL_3pzFvCOuMkCCD6penxeIXL1Q3pgibJtY90f-EtcOt64vKpkJK7nUpSKPoEd4mo7ls4jA7KtBHa_HcVKAEJyaR8UwTbOYwUOPlCnqT049Yyu6cf6Mf8WR-7ILkjJWs4Q5iq-RSCF18LDEc7uWsxuLZWVhFhrKeWxquwnK_wRPYrc2_JLUN4d2VV8Sw-lI5u5DeAtT50wgtq3boB01ArVPq8E1QG_LxrzGpyq7tWCtPLVoW3mD2fbThCY5rLXJKO1vd4nTjL523LCafk5PsU2DhIKoCmMelIsJWNBXkWmDaaBlFf8tCxXiYeL71cPLNduHK2FQvx6cpQM5HjUBa5ZmhjOPTnLSdbED4L8hBZedesQmKOgfru3A-6j6SLjQhgoZoN5QurWl2jo3WgwkHP-FXNoxceaLpKPuizn2LC7jFmi-u38-BrcGK1dB3R3cewnN9IQEchKDUs7idCH__gLigOsvhxbhS9xVvjk7Bqk9rqglGmwhvrB3B3tKbr0kDaaNANfBXa9b9rYLU1gUS6S9mbmOkaIDw66eChY8LwcfxLX0wWav_A34aU5ZbX0HTN6aR69fSeIvY7LfVucOh7L718PtbRdXUiHCrh_7RU1949dTIYeLnF86VLW2EkepKTEbCbhwK6BgDfJCJCOFw")
+                            .header("clientinfo", "{  \"deviceID\": \"79f59867dce4e2910619d92186c090a9\",  \"deviceID2\": \"79f59867dce4e2910619d92186c090a9\",  \"deviceTimeZone\": \"Gulf Standard Time\",  \"deviceDateTime\": \"23-Nov-2021 08:35 AM\",  \"deviceIpAddress\": \"168.122.1.1\",  \"deviceLatitude\": \"25.1215284\",  \"deviceLongitude\": \"56.3514986\",  \"deviceType\": \"Android\",  \"deviceModel\": \"samsung - SM-A307FN\",  \"deviceVersion\": \"10\",  \"deviceUserID\": \"fGlsj3U6SN\",  \"deviceAppVersion\": \"1.0.8\",  \"deviceIsJailBroken\": true}")
+                            .post(body)
+                            .build();
+                    Response staticResponse = null;
+                    try {
+                        staticResponse = client.newCall(request).execute();
+                        int statuscode = staticResponse.code();
+                        if (statuscode == 401) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    return;
+                                }
+                            });
+                        } else {
+                            String staticRes = staticResponse.body().string();
+                            Log.i(null, staticRes);
+                            final JSONObject staticJsonObj = new JSONObject(staticRes);
+                            if (staticJsonObj.getInt("rcode") == 200) {
+
+                            }
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+            thread.start();
+
+        }
+
+
+
+    public void getAllCoverageAmount(){
+
+        Thread thread = new Thread(new Runnable() {
+
+            public void run() {
+
+                String postURL = getString(R.string.base_url)+"/ti/Coverage/GetAllCoverageAmount";
+                final MediaType JSON
+                        = MediaType.parse("application/json; charset=utf-8");
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .connectTimeout(120, TimeUnit.SECONDS)
+                        .writeTimeout(120, TimeUnit.SECONDS)
+                        .readTimeout(120, TimeUnit.SECONDS)
+                        .build();
+                JsonObject Details = new JsonObject();
+                String insertString = Details.toString();
+//        String insertString = "{\n" +
+//                "  \"quotationID\": \"IQ-AAA2569\",\n" +
+//                "  \"productID\": \"85\",\n" +
+//                "  \"vehicleTypeID\": \"27\"\n" +
+//                "}";
+                RequestBody body = RequestBody.create(JSON, insertString);
+                Request request = new Request.Builder()
+                        .url(postURL)
+                        .header("fingerprint","79f59867dce4e2910619d92186c090a9")
+                        .header("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIyYzExZGE0OC0wMjljLTRiODgtOTI2Yi1jODViNTI0ZmFmZTMiLCJuYmYiOjE2Njk3MTQ5NDQsImV4cCI6MTY2OTcxODU0NCwiaWF0IjoxNjY5NzE0OTQ0LCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.W7DGRcz2hdFxwXOeGmt9mlRoL_3pzFvCOuMkCCD6penxeIXL1Q3pgibJtY90f-EtcOt64vKpkJK7nUpSKPoEd4mo7ls4jA7KtBHa_HcVKAEJyaR8UwTbOYwUOPlCnqT049Yyu6cf6Mf8WR-7ILkjJWs4Q5iq-RSCF18LDEc7uWsxuLZWVhFhrKeWxquwnK_wRPYrc2_JLUN4d2VV8Sw-lI5u5DeAtT50wgtq3boB01ArVPq8E1QG_LxrzGpyq7tWCtPLVoW3mD2fbThCY5rLXJKO1vd4nTjL523LCafk5PsU2DhIKoCmMelIsJWNBXkWmDaaBlFf8tCxXiYeL71cPLNduHK2FQvx6cpQM5HjUBa5ZmhjOPTnLSdbED4L8hBZedesQmKOgfru3A-6j6SLjQhgoZoN5QurWl2jo3WgwkHP-FXNoxceaLpKPuizn2LC7jFmi-u38-BrcGK1dB3R3cewnN9IQEchKDUs7idCH__gLigOsvhxbhS9xVvjk7Bqk9rqglGmwhvrB3B3tKbr0kDaaNANfBXa9b9rYLU1gUS6S9mbmOkaIDw66eChY8LwcfxLX0wWav_A34aU5ZbX0HTN6aR69fSeIvY7LfVucOh7L718PtbRdXUiHCrh_7RU1949dTIYeLnF86VLW2EkepKTEbCbhwK6BgDfJCJCOFw")
+                        .header("clientinfo", "{  \"deviceID\": \"79f59867dce4e2910619d92186c090a9\",  \"deviceID2\": \"79f59867dce4e2910619d92186c090a9\",  \"deviceTimeZone\": \"Gulf Standard Time\",  \"deviceDateTime\": \"23-Nov-2021 08:35 AM\",  \"deviceIpAddress\": \"168.122.1.1\",  \"deviceLatitude\": \"25.1215284\",  \"deviceLongitude\": \"56.3514986\",  \"deviceType\": \"Android\",  \"deviceModel\": \"samsung - SM-A307FN\",  \"deviceVersion\": \"10\",  \"deviceUserID\": \"fGlsj3U6SN\",  \"deviceAppVersion\": \"1.0.8\",  \"deviceIsJailBroken\": true}")
+                        .post(body)
+                        .build();
+                Response staticResponse = null;
+                try {
+                    staticResponse = client.newCall(request).execute();
+                    int statuscode = staticResponse.code();
+                    if (statuscode == 401) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                return;
+                            }
+                        });
+                    } else {
+                        String staticRes = staticResponse.body().string();
+                        Log.i(null, staticRes);
+                        final JSONObject staticJsonObj = new JSONObject(staticRes);
+                        if (staticJsonObj.getInt("rcode") == 200) {
+                            JSONObject rObj=staticJsonObj.getJSONObject("rObj");
+                            JSONArray getAllCoverageAmount=rObj.getJSONArray("getAllCoverageAmount");
+                            for(int i=0;i<getAllCoverageAmount.length();i++){
+                                JSONObject index=getAllCoverageAmount.getJSONObject(i);
+                                String coverageAmountText=index.getString("coverageAmountText");
+                                int coverageAmount=index.getInt("coverageAmount");
+                                getCoverageAmount.add(new GetAllCoverageAmount(coverageAmountText,coverageAmount));
+                            }
+
+                            coverageArray=new ArrayList<>();
+                            for (int i=0;i<getCoverageAmount.size();i++){
+                                coverageArray.add(getCoverageAmount.get(i).getCoverageAmountText());
+                            }
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ArrayAdapter arrayAdapter1 = new ArrayAdapter(MainActivity.this, R.layout.custom_spinner_layout, coverageArray);
+                                    try {
+                                        arrayAdapter1.setDropDownViewResource(R.layout.custom_spinner_layout);
+                                        MainActivity.this.coverageSpinner.setAdapter(arrayAdapter1);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+
+
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        thread.start();
+
+    }
+   /* public void MobileActionlog(Context context)
     {
         try {
             Thread thread = new Thread(new Runnable() {
@@ -132,12 +289,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             String url=getString(R.string.base_url)+"/ti/Coverage/GetAllCoverageAmount";
                             String body="";
                             RequestBody rb= RequestBody.create(MediaType.parse("application/json; charset=utf-8"),body);
-                            String token="eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiI0MThjY2Q4Yi0xNjRmLTQ0OWYtODFiZS0zNjMzNWFhOTcyZTEiLCJuYmYiOjE2Njk2OTk2MTIsImV4cCI6MTY2OTcwMzIxMiwiaWF0IjoxNjY5Njk5NjEyLCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.hXPkKuG0WLb7kiPKPtMNVvFkOb0CP0rqBNX1O9qpBAys6OeBohJnG9C1lM7DQPAvNcy4duiU43WKTfSIqsS6_x2-5nSI6UzXnXD0s_Y8-jnOFw9CL-Qe8yqjIoZD96SIb9Puxfxq6KHBIubFyyZQTauORucWecnxBXOs3gKOzEqtFAbpWxQT2fzpJbKaTQcQpuJMV5cN6oVENLpuzjOlIH2EUtQpgWNlWkXYn0TgXIaXH46QasaM2_UYduIyVk2ObB4Fb7UvL0_Z7tVXs1Juf2jZmb5R_0NYlVFSGc7UZBTZAIgJnWYCcyjBWFKIeILUgY8t1AAkEhr5qdxC6Dhf8jxUNTRi1Or4GtAwC__XTsveRs3byQ-a40X1skUTBjzju5GK2cT54N142RerRLA-D8Gzbw6nUCztmlHxoRfmvWuB4GTjp4atw74UbIRf6I92Lu6dfOc4zicPJnNxndI9PUj_JQFTGfW0OZ5YZqgxH81QLKr3hip1itv7KvO_NMmjIEmgM9RQnkhXTNrKGvaqpRD9U-Twzyth4AuyTJ-Ry_OBlhFo7f2LQe_zcLURdG7WYzIu8cdPoea9oxR1pDtDMxUZLewpvH4NZGVg9LhVcK-IbNF3gV1HYbAxVrRprQnR15QekhTiF6L9PeuRgiNggMpN0xudfDyiSq-eUbanMPs";
+                            String token="eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIyMTk0Y2QxOS1hMDU1LTRkY2UtODM1Yi02OWY0YWQ5NDE1MjgiLCJuYmYiOjE2Njk3MTAwNDYsImV4cCI6MTY2OTcxMzY0NiwiaWF0IjoxNjY5NzEwMDQ2LCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.BuAH4P5ova8kNxnFDwuA_T6SA0hkv2ujmKMFXuaZ4jxX18YISV8PH_Ggoi0GAivdRTkiDouE5YZmFwg-o-fqKWF64KTi8pfqVQzybkoiHnscAVdxEWUH4G8D9UhKzEc6qmugnu-wWdlJcqU15_Issytb5GjWYtIy88UDaQzNhAmj25iptL9vgRbd9sHGHrrZZDe2zdsZUnRZeeZUiWQhOte00qHGkszgki2wu8QndTQNA0c0NA4daEuyHC6aSlPrZdE3L7-MyYrkiJRKJb0v-lHq31sHcdCd2e3Ra9IgX4sEHyOtLeh9Nqs7ztMahREbAaO1J94pwX4UJNhFrwD37tqZlRz-YR9DNOPC-vRy5-3ywBf5vbh74QZi08G4iZerIEOWhwMRY9GsKgjjeb2Q-t3zNZBj2bxWEnWfUbLB7X2Mikmg7btLl_UgYsUwo9MnxwpZILp2aIOrONiTgLyKQF9aYyAJWxetO5fNtcqwWUkZsLYHjxfn4Bsaz5an-cSz3Azg4Yjf7OVWHP7-tyZLkKnhN0AE8ToE4KE7kEMWenBZTc5hC_tYMDWlK8VvCmvauJ5jYnore6KFcrJkDsZNECN5CBmXAAEUX5RBpbEhuMgrkVic4RVmw5k1QIjsmKvg50UcS-RVDQr3wkRbTo63nN9C3qPXgEi8VVeJ4RwbiME";
                             Request request = new Request.Builder()
                                     .url(url)
-                                    .addHeader("Fingerprint",uniqueidval)
-                                    .addHeader("ClientInfo",MainActivity.this.InsertMobileparameters(MainActivity.this))
-                                    .addHeader("Authorization","Bearer "+token)
+                                    .addHeader("fingerprint",uniqueidval)
+                                    .addHeader("clientInfo",MainActivity.this.InsertMobileparameters(MainActivity.this))
+                                    .addHeader("Authorization","Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIyMTk0Y2QxOS1hMDU1LTRkY2UtODM1Yi02OWY0YWQ5NDE1MjgiLCJuYmYiOjE2Njk3MTAwNDYsImV4cCI6MTY2OTcxMzY0NiwiaWF0IjoxNjY5NzEwMDQ2LCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.BuAH4P5ova8kNxnFDwuA_T6SA0hkv2ujmKMFXuaZ4jxX18YISV8PH_Ggoi0GAivdRTkiDouE5YZmFwg-o-fqKWF64KTi8pfqVQzybkoiHnscAVdxEWUH4G8D9UhKzEc6qmugnu-wWdlJcqU15_Issytb5GjWYtIy88UDaQzNhAmj25iptL9vgRbd9sHGHrrZZDe2zdsZUnRZeeZUiWQhOte00qHGkszgki2wu8QndTQNA0c0NA4daEuyHC6aSlPrZdE3L7-MyYrkiJRKJb0v-lHq31sHcdCd2e3Ra9IgX4sEHyOtLeh9Nqs7ztMahREbAaO1J94pwX4UJNhFrwD37tqZlRz-YR9DNOPC-vRy5-3ywBf5vbh74QZi08G4iZerIEOWhwMRY9GsKgjjeb2Q-t3zNZBj2bxWEnWfUbLB7X2Mikmg7btLl_UgYsUwo9MnxwpZILp2aIOrONiTgLyKQF9aYyAJWxetO5fNtcqwWUkZsLYHjxfn4Bsaz5an-cSz3Azg4Yjf7OVWHP7-tyZLkKnhN0AE8ToE4KE7kEMWenBZTc5hC_tYMDWlK8VvCmvauJ5jYnore6KFcrJkDsZNECN5CBmXAAEUX5RBpbEhuMgrkVic4RVmw5k1QIjsmKvg50UcS-RVDQr3wkRbTo63nN9C3qPXgEi8VVeJ4RwbiME")
                                     .post(rb)
                                     .build();
                             Response response= null;
@@ -157,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         {
             ex.getStackTrace();
         }
-    }
+    }*/
     //Method for getting OTP Pop up
     //Using Layout inflater and Dialog
     private void getOTP() {
@@ -203,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         if (getOtp.length()>=3) {
                             //making the blur layout to be gone
                             blur.setVisibility(View.GONE);
-                            MobileActionlog(MainActivity.this);
+
                             d.dismiss();
                         } else {
                             AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
@@ -286,16 +443,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 e.printStackTrace();
             }
 
-            coverageArray = new String[]{getString(R.string.k_250),getString(R.string.k_300),
-                    getString(R.string.k_500),getString(R.string.million_1),getString(R.string.million_10)};
-
-            ArrayAdapter arrayAdapter1 = new ArrayAdapter(MainActivity.this, R.layout.custom_spinner_layout, coverageArray);
-            try {
-                arrayAdapter1.setDropDownViewResource(R.layout.custom_spinner_layout);
-                coverageSpinner.setAdapter(arrayAdapter1);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
             String[] paymentArray = new String[]{getString(R.string.monthly), getString(R.string.quarterly), getString(R.string.yearly)};
 
