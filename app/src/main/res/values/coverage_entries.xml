@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="coverage_array">
-        <item><font color="#3d58e5">10 Million</font></item>
-        <item><font color="#3d58e5">5 Million</font></item>
-        <item><font color="#3d58e5">3 Million</font></item>
-    </string-array>
-</resources>

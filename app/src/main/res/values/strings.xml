@@ -40,6 +40,13 @@
     <string name="k_250">250k</string>
     <string name="k_300">300k</string>
     <string name="k_500">500k</string>
+    <string name="error_msg">Your Request has some technical issues. An incident is created and escalated to the Technical support team. You will be contacted soon for issue resolution.</string>
+    <string name="do_you_smoke_or_chew_tobacco">Do You Smoke or Chew Tobacco?</string>
+    <string name="coverage">Coverage</string>
+    <string name="term">Term</string>
+    <string name="to_view_accurate_quotes_please_confirm_your_details_below">To View Accurate quotes, please confirm your details below</string>
+    <string name="welcome_back">Welcome Back!</string>
+    <string name="view_plans">Get Quotes</string>
 
 
 </resources>

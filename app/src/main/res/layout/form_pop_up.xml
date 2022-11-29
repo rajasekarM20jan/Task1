@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightdarkcolorgrey"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/activity_margin_20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_back"
+            android:fontFamily="@font/latinotypeantartidaroundedmedium"
+            android:textColor="@color/black"
+            android:textSize="@dimen/activity_margin_20sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/to_view_accurate_quotes_please_confirm_your_details_below"
+            android:textSize="@dimen/activity_margin_10sp"
+            android:fontFamily="@font/latinotypeantartidaroundedmedium"
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/activity_margin_20dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/term"
+                android:fontFamily="@font/latinotypeantartidaroundedmedium"
+                android:textColor="@color/black"
+                android:textSize="@dimen/activity_margin_14sp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/activity_margin_5dp"
+                />
+            <Spinner
+                android:id="@+id/termSpinnerInForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/activity_margin_20dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/coverage"
+                android:fontFamily="@font/latinotypeantartidaroundedmedium"
+                android:textColor="@color/black"
+                android:textSize="@dimen/activity_margin_14sp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/activity_margin_5dp"
+                />
+            <Spinner
+                android:id="@+id/coverageSpinnerInForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/activity_margin_20dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/do_you_smoke_or_chew_tobacco"
+                android:fontFamily="@font/latinotypeantartidaroundedmedium"
+                android:textColor="@color/black"
+                android:textSize="@dimen/activity_margin_14sp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/activity_margin_5dp"
+                />
+            <Spinner
+                android:id="@+id/consumptionOfTobaccoSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <android.widget.Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:text="@string/view_plans"
+            android:fontFamily="@font/latinotypeantartidaroundedmedium"
+            android:textColor="@color/white"
+            android:layout_marginStart="@dimen/activity_margin_40dp"
+            android:layout_marginTop="@dimen/activity_margin_25dp"
+            android:layout_marginEnd="@dimen/activity_margin_40dp"
+            android:layout_marginBottom="@dimen/activity_margin_20dp"
+            />
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

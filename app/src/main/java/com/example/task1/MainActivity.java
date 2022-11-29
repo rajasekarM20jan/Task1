@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     String resultData;
     ArrayList coverageArray;
     static String uniqueidval;
+    String error502;
     Spinner coverageSpinner,policyTermSpinner,paymentSpinner;
     ArrayList<GetAllCoverageAmount> getCoverageAmount;
     ArrayList<ComparisonListModel> comparisonList;
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //initialization of variables and layout fields
-
+        error502=getString(R.string.error_msg);
         uniqueidval = Settings.Secure.getString(MainActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
         listView = findViewById(R.id.listView1);
         comparePlans = findViewById(R.id.comparePlans);
@@ -118,9 +119,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         getLocation();
         InsertMobileparameters(MainActivity.this);
 
-        OTPValidate();
-        getAllCoverageAmount();
 
+
+        getAllCoverageAmount();
 
         coverageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -150,11 +151,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             .readTimeout(120, TimeUnit.SECONDS)
                             .build();
                     JsonObject Details = new JsonObject();
+                    Details.addProperty("oTPID","5d864361-9e3b-4ebf-aaf1-7769eb2e0880");
+                    Details.addProperty("oTP","596726");
                     String insertString = Details.toString();
                     RequestBody body = RequestBody.create(JSON, insertString);
                     Request request = new Request.Builder()
                             .url(postURL)
-                            .header("fingerprint","79f59867dce4e2910619d92186c090a9")
+                            .header("fingerprint",uniqueidval)
                             .header("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIyYzExZGE0OC0wMjljLTRiODgtOTI2Yi1jODViNTI0ZmFmZTMiLCJuYmYiOjE2Njk3MTQ5NDQsImV4cCI6MTY2OTcxODU0NCwiaWF0IjoxNjY5NzE0OTQ0LCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.W7DGRcz2hdFxwXOeGmt9mlRoL_3pzFvCOuMkCCD6penxeIXL1Q3pgibJtY90f-EtcOt64vKpkJK7nUpSKPoEd4mo7ls4jA7KtBHa_HcVKAEJyaR8UwTbOYwUOPlCnqT049Yyu6cf6Mf8WR-7ILkjJWs4Q5iq-RSCF18LDEc7uWsxuLZWVhFhrKeWxquwnK_wRPYrc2_JLUN4d2VV8Sw-lI5u5DeAtT50wgtq3boB01ArVPq8E1QG_LxrzGpyq7tWCtPLVoW3mD2fbThCY5rLXJKO1vd4nTjL523LCafk5PsU2DhIKoCmMelIsJWNBXkWmDaaBlFf8tCxXiYeL71cPLNduHK2FQvx6cpQM5HjUBa5ZmhjOPTnLSdbED4L8hBZedesQmKOgfru3A-6j6SLjQhgoZoN5QurWl2jo3WgwkHP-FXNoxceaLpKPuizn2LC7jFmi-u38-BrcGK1dB3R3cewnN9IQEchKDUs7idCH__gLigOsvhxbhS9xVvjk7Bqk9rqglGmwhvrB3B3tKbr0kDaaNANfBXa9b9rYLU1gUS6S9mbmOkaIDw66eChY8LwcfxLX0wWav_A34aU5ZbX0HTN6aR69fSeIvY7LfVucOh7L718PtbRdXUiHCrh_7RU1949dTIYeLnF86VLW2EkepKTEbCbhwK6BgDfJCJCOFw")
                             .header("clientinfo", "{  \"deviceID\": \"79f59867dce4e2910619d92186c090a9\",  \"deviceID2\": \"79f59867dce4e2910619d92186c090a9\",  \"deviceTimeZone\": \"Gulf Standard Time\",  \"deviceDateTime\": \"23-Nov-2021 08:35 AM\",  \"deviceIpAddress\": \"168.122.1.1\",  \"deviceLatitude\": \"25.1215284\",  \"deviceLongitude\": \"56.3514986\",  \"deviceType\": \"Android\",  \"deviceModel\": \"samsung - SM-A307FN\",  \"deviceVersion\": \"10\",  \"deviceUserID\": \"fGlsj3U6SN\",  \"deviceAppVersion\": \"1.0.8\",  \"deviceIsJailBroken\": true}")
                             .post(body)
@@ -176,6 +179,24 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             final JSONObject staticJsonObj = new JSONObject(staticRes);
                             if (staticJsonObj.getInt("rcode") == 200) {
 
+                            }else if(staticJsonObj.getInt("rcode") == 500){
+                                JSONArray rmsg=staticJsonObj.getJSONArray("rmsg");
+                                JSONObject index=rmsg.getJSONObject(0);
+                                String errorText=index.getString("errorText");
+                                String trnId=staticJsonObj.getString("trnID");
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getAlertDialog(errorText,trnId);
+                                    }
+                                });
+                            }else{
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getAlertDialog(error502,"AKI-00015");
+                                    }
+                                });
                             }
                         }
                     }catch (Exception e){
@@ -187,8 +208,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             thread.start();
 
         }
-
-
 
     public void getAllCoverageAmount(){
 
@@ -261,8 +280,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                                     }
                                 }
                             });
+                        }else if(staticJsonObj.getInt("rcode") == 500){
+                            JSONArray rmsg=staticJsonObj.getJSONArray("rmsg");
+                            JSONObject index=rmsg.getJSONObject(0);
+                            String errorText=index.getString("errorText");
+                            String trnId=staticJsonObj.getString("trnID");
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getAlertDialog(errorText,trnId);
+                                }
+                            });
 
-
+                        }else{
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getAlertDialog(error502,"AKI-00015");
+                                }
+                            });
 
                         }
                     }
@@ -275,57 +311,73 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         thread.start();
 
     }
-   /* public void MobileActionlog(Context context)
-    {
-        try {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            System.out.println("unique id: "+uniqueidval);
-                            OkHttpClient client=new OkHttpClient();
-                            String url=getString(R.string.base_url)+"/ti/Coverage/GetAllCoverageAmount";
-                            String body="";
-                            RequestBody rb= RequestBody.create(MediaType.parse("application/json; charset=utf-8"),body);
-                            String token="eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIyMTk0Y2QxOS1hMDU1LTRkY2UtODM1Yi02OWY0YWQ5NDE1MjgiLCJuYmYiOjE2Njk3MTAwNDYsImV4cCI6MTY2OTcxMzY0NiwiaWF0IjoxNjY5NzEwMDQ2LCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.BuAH4P5ova8kNxnFDwuA_T6SA0hkv2ujmKMFXuaZ4jxX18YISV8PH_Ggoi0GAivdRTkiDouE5YZmFwg-o-fqKWF64KTi8pfqVQzybkoiHnscAVdxEWUH4G8D9UhKzEc6qmugnu-wWdlJcqU15_Issytb5GjWYtIy88UDaQzNhAmj25iptL9vgRbd9sHGHrrZZDe2zdsZUnRZeeZUiWQhOte00qHGkszgki2wu8QndTQNA0c0NA4daEuyHC6aSlPrZdE3L7-MyYrkiJRKJb0v-lHq31sHcdCd2e3Ra9IgX4sEHyOtLeh9Nqs7ztMahREbAaO1J94pwX4UJNhFrwD37tqZlRz-YR9DNOPC-vRy5-3ywBf5vbh74QZi08G4iZerIEOWhwMRY9GsKgjjeb2Q-t3zNZBj2bxWEnWfUbLB7X2Mikmg7btLl_UgYsUwo9MnxwpZILp2aIOrONiTgLyKQF9aYyAJWxetO5fNtcqwWUkZsLYHjxfn4Bsaz5an-cSz3Azg4Yjf7OVWHP7-tyZLkKnhN0AE8ToE4KE7kEMWenBZTc5hC_tYMDWlK8VvCmvauJ5jYnore6KFcrJkDsZNECN5CBmXAAEUX5RBpbEhuMgrkVic4RVmw5k1QIjsmKvg50UcS-RVDQr3wkRbTo63nN9C3qPXgEi8VVeJ4RwbiME";
-                            Request request = new Request.Builder()
-                                    .url(url)
-                                    .addHeader("fingerprint",uniqueidval)
-                                    .addHeader("clientInfo",MainActivity.this.InsertMobileparameters(MainActivity.this))
-                                    .addHeader("Authorization","Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIyMTk0Y2QxOS1hMDU1LTRkY2UtODM1Yi02OWY0YWQ5NDE1MjgiLCJuYmYiOjE2Njk3MTAwNDYsImV4cCI6MTY2OTcxMzY0NiwiaWF0IjoxNjY5NzEwMDQ2LCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.BuAH4P5ova8kNxnFDwuA_T6SA0hkv2ujmKMFXuaZ4jxX18YISV8PH_Ggoi0GAivdRTkiDouE5YZmFwg-o-fqKWF64KTi8pfqVQzybkoiHnscAVdxEWUH4G8D9UhKzEc6qmugnu-wWdlJcqU15_Issytb5GjWYtIy88UDaQzNhAmj25iptL9vgRbd9sHGHrrZZDe2zdsZUnRZeeZUiWQhOte00qHGkszgki2wu8QndTQNA0c0NA4daEuyHC6aSlPrZdE3L7-MyYrkiJRKJb0v-lHq31sHcdCd2e3Ra9IgX4sEHyOtLeh9Nqs7ztMahREbAaO1J94pwX4UJNhFrwD37tqZlRz-YR9DNOPC-vRy5-3ywBf5vbh74QZi08G4iZerIEOWhwMRY9GsKgjjeb2Q-t3zNZBj2bxWEnWfUbLB7X2Mikmg7btLl_UgYsUwo9MnxwpZILp2aIOrONiTgLyKQF9aYyAJWxetO5fNtcqwWUkZsLYHjxfn4Bsaz5an-cSz3Azg4Yjf7OVWHP7-tyZLkKnhN0AE8ToE4KE7kEMWenBZTc5hC_tYMDWlK8VvCmvauJ5jYnore6KFcrJkDsZNECN5CBmXAAEUX5RBpbEhuMgrkVic4RVmw5k1QIjsmKvg50UcS-RVDQr3wkRbTo63nN9C3qPXgEi8VVeJ4RwbiME")
-                                    .post(rb)
-                                    .build();
-                            Response response= null;
-                            try {
-                                response = client.newCall(request).execute();
-                                System.out.println("My Response123 : "+response);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                }
-            });
-            thread.start();
-        }
-        catch (Exception ex)
-        {
-            ex.getStackTrace();
-        }
-    }*/
+
+    private void getAlertDialog(String errorText, String trnId) {
+        AlertDialog.Builder dialog=new AlertDialog.Builder(MainActivity.this);
+        dialog.setCancelable(false);
+        dialog.setMessage(errorText+"\n"+trnId);
+        dialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    /* public void MobileActionlog(Context context)
+     {
+         try {
+             Thread thread = new Thread(new Runnable() {
+                 @Override
+                 public void run() {
+                     AsyncTask.execute(new Runnable() {
+                         @Override
+                         public void run() {
+                             System.out.println("unique id: "+uniqueidval);
+                             OkHttpClient client=new OkHttpClient();
+                             String url=getString(R.string.base_url)+"/ti/Coverage/GetAllCoverageAmount";
+                             String body="";
+                             RequestBody rb= RequestBody.create(MediaType.parse("application/json; charset=utf-8"),body);
+                             String token="eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIyMTk0Y2QxOS1hMDU1LTRkY2UtODM1Yi02OWY0YWQ5NDE1MjgiLCJuYmYiOjE2Njk3MTAwNDYsImV4cCI6MTY2OTcxMzY0NiwiaWF0IjoxNjY5NzEwMDQ2LCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.BuAH4P5ova8kNxnFDwuA_T6SA0hkv2ujmKMFXuaZ4jxX18YISV8PH_Ggoi0GAivdRTkiDouE5YZmFwg-o-fqKWF64KTi8pfqVQzybkoiHnscAVdxEWUH4G8D9UhKzEc6qmugnu-wWdlJcqU15_Issytb5GjWYtIy88UDaQzNhAmj25iptL9vgRbd9sHGHrrZZDe2zdsZUnRZeeZUiWQhOte00qHGkszgki2wu8QndTQNA0c0NA4daEuyHC6aSlPrZdE3L7-MyYrkiJRKJb0v-lHq31sHcdCd2e3Ra9IgX4sEHyOtLeh9Nqs7ztMahREbAaO1J94pwX4UJNhFrwD37tqZlRz-YR9DNOPC-vRy5-3ywBf5vbh74QZi08G4iZerIEOWhwMRY9GsKgjjeb2Q-t3zNZBj2bxWEnWfUbLB7X2Mikmg7btLl_UgYsUwo9MnxwpZILp2aIOrONiTgLyKQF9aYyAJWxetO5fNtcqwWUkZsLYHjxfn4Bsaz5an-cSz3Azg4Yjf7OVWHP7-tyZLkKnhN0AE8ToE4KE7kEMWenBZTc5hC_tYMDWlK8VvCmvauJ5jYnore6KFcrJkDsZNECN5CBmXAAEUX5RBpbEhuMgrkVic4RVmw5k1QIjsmKvg50UcS-RVDQr3wkRbTo63nN9C3qPXgEi8VVeJ4RwbiME";
+                             Request request = new Request.Builder()
+                                     .url(url)
+                                     .addHeader("fingerprint",uniqueidval)
+                                     .addHeader("clientInfo",MainActivity.this.InsertMobileparameters(MainActivity.this))
+                                     .addHeader("Authorization","Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIyMTk0Y2QxOS1hMDU1LTRkY2UtODM1Yi02OWY0YWQ5NDE1MjgiLCJuYmYiOjE2Njk3MTAwNDYsImV4cCI6MTY2OTcxMzY0NiwiaWF0IjoxNjY5NzEwMDQ2LCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.BuAH4P5ova8kNxnFDwuA_T6SA0hkv2ujmKMFXuaZ4jxX18YISV8PH_Ggoi0GAivdRTkiDouE5YZmFwg-o-fqKWF64KTi8pfqVQzybkoiHnscAVdxEWUH4G8D9UhKzEc6qmugnu-wWdlJcqU15_Issytb5GjWYtIy88UDaQzNhAmj25iptL9vgRbd9sHGHrrZZDe2zdsZUnRZeeZUiWQhOte00qHGkszgki2wu8QndTQNA0c0NA4daEuyHC6aSlPrZdE3L7-MyYrkiJRKJb0v-lHq31sHcdCd2e3Ra9IgX4sEHyOtLeh9Nqs7ztMahREbAaO1J94pwX4UJNhFrwD37tqZlRz-YR9DNOPC-vRy5-3ywBf5vbh74QZi08G4iZerIEOWhwMRY9GsKgjjeb2Q-t3zNZBj2bxWEnWfUbLB7X2Mikmg7btLl_UgYsUwo9MnxwpZILp2aIOrONiTgLyKQF9aYyAJWxetO5fNtcqwWUkZsLYHjxfn4Bsaz5an-cSz3Azg4Yjf7OVWHP7-tyZLkKnhN0AE8ToE4KE7kEMWenBZTc5hC_tYMDWlK8VvCmvauJ5jYnore6KFcrJkDsZNECN5CBmXAAEUX5RBpbEhuMgrkVic4RVmw5k1QIjsmKvg50UcS-RVDQr3wkRbTo63nN9C3qPXgEi8VVeJ4RwbiME")
+                                     .post(rb)
+                                     .build();
+                             Response response= null;
+                             try {
+                                 response = client.newCall(request).execute();
+                                 System.out.println("My Response123 : "+response);
+                             } catch (IOException e) {
+                                 e.printStackTrace();
+                             }
+                         }
+                     });
+                 }
+             });
+             thread.start();
+         }
+         catch (Exception ex)
+         {
+             ex.getStackTrace();
+         }
+     }*/
     //Method for getting OTP Pop up
     //Using Layout inflater and Dialog
     private void getOTP() {
         try{
+            WindowManager.LayoutParams params=new WindowManager.LayoutParams();
             LayoutInflater inflater=(LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             //inflating the custom layout otp_pop_up
             View v=inflater.inflate(R.layout.otp_pop_up,null,false);
-            v.setBackgroundDrawable(getResources().getDrawable(R.drawable.comparison_bg));
             Dialog d=new Dialog(MainActivity.this);
             //setting the pop-up layout to Dialog d
             d.setContentView(v);
+            d.getWindow().setLayout(980,980);
+            d.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.comparison_bg));
             d.create();
             d.setCancelable(false);
             // making layout blur to be visible.
@@ -360,8 +412,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         if (getOtp.length()>=3) {
                             //making the blur layout to be gone
                             blur.setVisibility(View.GONE);
-
+                            OTPValidate();
                             d.dismiss();
+                            getForm();
                         } else {
                             AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
                             alert.setCancelable(false);
@@ -384,6 +437,61 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             e.printStackTrace();
         }
     }
+
+    private void getForm() {
+        LayoutInflater inflater=(LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        //inflating the custom layout otp_pop_up
+        View v=inflater.inflate(R.layout.form_pop_up,null,false);
+        Dialog d=new Dialog(MainActivity.this);
+        //setting the pop-up layout to Dialog d
+        d.setContentView(v);
+        /*d.getWindow().setLayout(980,1300);*/
+        d.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.comparison_bg));
+        d.create();
+        d.setCancelable(false);
+        // making layout blur to be visible.
+        d.show();
+
+        Spinner termSpinnerInForm,coverageSpinnerInForm,consumptionOfTobaccoSpinner;
+
+        termSpinnerInForm=v.findViewById(R.id.termSpinnerInForm);
+
+        coverageSpinnerInForm=v.findViewById(R.id.coverageSpinnerInForm);
+
+        consumptionOfTobaccoSpinner=v.findViewById(R.id.consumptionOfTobaccoSpinner);
+
+        String[] term = new String[]{getString(R.string.years_15), getString(R.string.years_20), getString(R.string.years_28)};
+
+        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, R.layout.custom_spinner_layout, term);
+        try {
+            arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_layout);
+            termSpinnerInForm.setAdapter(arrayAdapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String coverage[]=new String[]{"250k","300k","500k","1 Million","10 Million"};
+
+        ArrayAdapter arrayAdapter2 = new ArrayAdapter(MainActivity.this, R.layout.custom_spinner_layout, coverage);
+        try {
+            arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_layout);
+            coverageSpinnerInForm.setAdapter(arrayAdapter2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String option[]=new String[]{"Yes","No"};
+
+        ArrayAdapter arrayAdapter3 = new ArrayAdapter(MainActivity.this, R.layout.custom_spinner_layout, option);
+        try {
+            arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_layout);
+            consumptionOfTobaccoSpinner.setAdapter(arrayAdapter3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void getTimer() {
         try {
             new CountDownTimer(60000, 1000) {

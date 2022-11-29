@@ -3,14 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/lightdarkcolorgrey"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/activity_margin_25dp"
+        android:text="Enter OTP"
+        android:textStyle="bold"
+        android:fontFamily="@font/latinotypeantartidaroundedbold"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/activity_margin_20sp"
+        />
+
 
     <TextView
         android:id="@+id/textViewInOTPPopUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label"
         android:layout_margin="@dimen/activity_margin_30dp"
         android:text="@string/please_enter_otp"
         app:layout_constraintStart_toStartOf="parent"

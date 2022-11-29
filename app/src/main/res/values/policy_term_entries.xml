@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="policy_term_array">
-        <item><font color="#3d58e5">28 Years</font></item>
-        <item><font color="#3d58e5">20 Years</font></item>
-        <item><font color="#3d58e5">15 Years</font></item>
-    </string-array>
-</resources>
