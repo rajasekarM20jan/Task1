@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     ConstraintLayout blur;
     String resultData;
     String[] coverageArray;
+    static String uniqueidval;
     Spinner coverageSpinner,policyTermSpinner,paymentSpinner;
 
     ArrayList<ComparisonListModel> comparisonList;
@@ -109,10 +110,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         resultData=getAllCoverageAmounts(MainActivity.this);
 
+
         coverageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                System.out.println(resultData);
                 int index=i;
                 String coverageAmount= coverageArray[i] ;
                 System.out.println("value : "+coverageAmount);
@@ -133,6 +135,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     }
 
+    private void getOTPApi(String headerData,String body){
+
+    }
+
     private void getCoverage(String data,String body) {
         try{
             OkHttpClient client=new OkHttpClient();
@@ -143,7 +149,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             Request request = new Request.Builder()
                     .url(url)
                     .addHeader("clientInfo",data)
-                    .addHeader("fingerprint","123456")
+                    .addHeader("fingerprint",uniqueidval)
+                    .addHeader("Authorization","Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiI0MThjY2Q4Yi0xNjRmLTQ0OWYtODFiZS0zNjMzNWFhOTcyZTEiLCJuYmYiOjE2Njk2OTk2MTIsImV4cCI6MTY2OTcwMzIxMiwiaWF0IjoxNjY5Njk5NjEyLCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.hXPkKuG0WLb7kiPKPtMNVvFkOb0CP0rqBNX1O9qpBAys6OeBohJnG9C1lM7DQPAvNcy4duiU43WKTfSIqsS6_x2-5nSI6UzXnXD0s_Y8-jnOFw9CL-Qe8yqjIoZD96SIb9Puxfxq6KHBIubFyyZQTauORucWecnxBXOs3gKOzEqtFAbpWxQT2fzpJbKaTQcQpuJMV5cN6oVENLpuzjOlIH2EUtQpgWNlWkXYn0TgXIaXH46QasaM2_UYduIyVk2ObB4Fb7UvL0_Z7tVXs1Juf2jZmb5R_0NYlVFSGc7UZBTZAIgJnWYCcyjBWFKIeILUgY8t1AAkEhr5qdxC6Dhf8jxUNTRi1Or4GtAwC__XTsveRs3byQ-a40X1skUTBjzju5GK2cT54N142RerRLA-D8Gzbw6nUCztmlHxoRfmvWuB4GTjp4atw74UbIRf6I92Lu6dfOc4zicPJnNxndI9PUj_JQFTGfW0OZ5YZqgxH81QLKr3hip1itv7KvO_NMmjIEmgM9RQnkhXTNrKGvaqpRD9U-Twzyth4AuyTJ-Ry_OBlhFo7f2LQe_zcLURdG7WYzIu8cdPoea9oxR1pDtDMxUZLewpvH4NZGVg9LhVcK-IbNF3gV1HYbAxVrRprQnR15QekhTiF6L9PeuRgiNggMpN0xudfDyiSq-eUbanMPs")
                     .post(rb)
                     .build();
 
@@ -155,8 +162,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-
-                    System.out.println("My Response : "+response);
+                    System.out.println("My Response : "+response.code());
                 }
             });
 
@@ -495,28 +501,28 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             String androidOS = Build.VERSION.RELEASE;
             String model = Build.MANUFACTURER + " - " + Build.MODEL;
-            SharedPreferences uniquePref = context.getSharedPreferences("Uniquepref", MODE_PRIVATE);
-            final String uniqueidval = uniquePref.getString("imei", null);
+            uniqueidval = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
             final String address1 = Latitude+","+Longitude;
             WifiManager wm = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
             String ipaddress = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
-            JsonObject mobileparamters = new JsonObject();
-            mobileparamters.addProperty("imeino1", uniqueidval);
-            mobileparamters.addProperty("imeino2", uniqueidval);
-            mobileparamters.addProperty("timezone", TimeZone.getDefault().getDisplayName());
-            mobileparamters.addProperty("currentdatetime", java.text.DateFormat.getDateTimeInstance().format(new Date()));
-            mobileparamters.addProperty("Address", address1);
-            mobileparamters.addProperty("latitude", Latitude);
-            mobileparamters.addProperty("longitude", Longitude);
-            mobileparamters.addProperty("IpAddress", ipaddress);
-            mobileparamters.addProperty("mobileType", "Android");
-            mobileparamters.addProperty("fireBaseuserid", "123456");
-            mobileparamters.addProperty("mobileModel", model);
-            mobileparamters.addProperty("mobileOSVersion", androidOS);
-            mobileparamters.addProperty("appVersion", "1.0.6");
-            mobileparamters.addProperty("IsJailBroken", rooteddevice);
-            System.out.println(mobileparamters);
-            String insertmobileString = mobileparamters.toString();
+            JsonObject mobileparameters = new JsonObject();
+            mobileparameters.addProperty("imeino1", uniqueidval);
+            mobileparameters.addProperty("imeino2", uniqueidval);
+            mobileparameters.addProperty("timezone", TimeZone.getDefault().getDisplayName());
+            mobileparameters.addProperty("currentdatetime", java.text.DateFormat.getDateTimeInstance().format(new Date()));
+            mobileparameters.addProperty("Address", address1);
+            mobileparameters.addProperty("latitude", Latitude);
+            mobileparameters.addProperty("longitude", Longitude);
+            mobileparameters.addProperty("IpAddress", ipaddress);
+            mobileparameters.addProperty("mobileType", "Android");
+            mobileparameters.addProperty("fireBaseuserid", "123456");
+            mobileparameters.addProperty("mobileModel", model);
+            mobileparameters.addProperty("mobileOSVersion", androidOS);
+            mobileparameters.addProperty("appVersion", "1.0.6");
+            mobileparameters.addProperty("IsJailBroken", rooteddevice);
+            System.out.println(mobileparameters);
+            String insertmobileString = mobileparameters.toString();
+
 //            encryptedSHA = "";
 //            String sourceStr = uniqueidval + ipaddress;
 //            try {
