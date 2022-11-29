@@ -369,7 +369,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     //Using Layout inflater and Dialog
     private void getOTP() {
         try{
-            WindowManager.LayoutParams params=new WindowManager.LayoutParams();
             LayoutInflater inflater=(LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             //inflating the custom layout otp_pop_up
             View v=inflater.inflate(R.layout.otp_pop_up,null,false);
@@ -445,7 +444,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Dialog d=new Dialog(MainActivity.this);
         //setting the pop-up layout to Dialog d
         d.setContentView(v);
-        /*d.getWindow().setLayout(980,1300);*/
+        d.getWindow().setLayout(980,1300);
         d.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.comparison_bg));
         d.create();
         d.setCancelable(false);
