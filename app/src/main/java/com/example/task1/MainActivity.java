@@ -1,6 +1,7 @@
 package com.example.task1;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -22,6 +23,7 @@ import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +49,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,6 +60,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import adapter.CustomAdapter;
 import adapter.CustomComparisonAdapter;
@@ -96,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //initialization of variables and layout fields
+
+        uniqueidval = Settings.Secure.getString(MainActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
         listView = findViewById(R.id.listView1);
         comparePlans = findViewById(R.id.comparePlans);
         blur = findViewById(R.id.blurLayout);
@@ -107,71 +113,51 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         callData();
         getOTP();
 
-
-        resultData=getAllCoverageAmounts(MainActivity.this);
-
-
-        coverageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                System.out.println(resultData);
-                int index=i;
-                String coverageAmount= coverageArray[i] ;
-                System.out.println("value : "+coverageAmount);
-                getLocation();
-                String Data=InsertMobileparameters(MainActivity.this);
-                System.out.println("1234567890 "+Data);
-                getCoverage(Data,resultData);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-
-
+        getLocation();
+        InsertMobileparameters(MainActivity.this);
 
     }
 
-    private void getOTPApi(String headerData,String body){
-
-    }
-
-    private void getCoverage(String data,String body) {
-        try{
-            OkHttpClient client=new OkHttpClient();
-            String url=getString(R.string.base_url)+"/Coverage/GetAllCoverageAmount";
-
-            RequestBody rb= RequestBody.create(MediaType.parse("application/json; charset=utf-8"),body);
-
-            Request request = new Request.Builder()
-                    .url(url)
-                    .addHeader("clientInfo",data)
-                    .addHeader("fingerprint",uniqueidval)
-                    .addHeader("Authorization","Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiI0MThjY2Q4Yi0xNjRmLTQ0OWYtODFiZS0zNjMzNWFhOTcyZTEiLCJuYmYiOjE2Njk2OTk2MTIsImV4cCI6MTY2OTcwMzIxMiwiaWF0IjoxNjY5Njk5NjEyLCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.hXPkKuG0WLb7kiPKPtMNVvFkOb0CP0rqBNX1O9qpBAys6OeBohJnG9C1lM7DQPAvNcy4duiU43WKTfSIqsS6_x2-5nSI6UzXnXD0s_Y8-jnOFw9CL-Qe8yqjIoZD96SIb9Puxfxq6KHBIubFyyZQTauORucWecnxBXOs3gKOzEqtFAbpWxQT2fzpJbKaTQcQpuJMV5cN6oVENLpuzjOlIH2EUtQpgWNlWkXYn0TgXIaXH46QasaM2_UYduIyVk2ObB4Fb7UvL0_Z7tVXs1Juf2jZmb5R_0NYlVFSGc7UZBTZAIgJnWYCcyjBWFKIeILUgY8t1AAkEhr5qdxC6Dhf8jxUNTRi1Or4GtAwC__XTsveRs3byQ-a40X1skUTBjzju5GK2cT54N142RerRLA-D8Gzbw6nUCztmlHxoRfmvWuB4GTjp4atw74UbIRf6I92Lu6dfOc4zicPJnNxndI9PUj_JQFTGfW0OZ5YZqgxH81QLKr3hip1itv7KvO_NMmjIEmgM9RQnkhXTNrKGvaqpRD9U-Twzyth4AuyTJ-Ry_OBlhFo7f2LQe_zcLURdG7WYzIu8cdPoea9oxR1pDtDMxUZLewpvH4NZGVg9LhVcK-IbNF3gV1HYbAxVrRprQnR15QekhTiF6L9PeuRgiNggMpN0xudfDyiSq-eUbanMPs")
-                    .post(rb)
-                    .build();
-
-            client.newCall(request).enqueue(new Callback() {
+    public void MobileActionlog(Context context)
+    {
+        try {
+            Thread thread = new Thread(new Runnable() {
                 @Override
-                public void onFailure(Call call, IOException e) {
-
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    System.out.println("My Response : "+response.code());
+                public void run() {
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println("unique id: "+uniqueidval);
+                            OkHttpClient client=new OkHttpClient();
+                            String url=getString(R.string.base_url)+"/ti/Coverage/GetAllCoverageAmount";
+                            String body="";
+                            RequestBody rb= RequestBody.create(MediaType.parse("application/json; charset=utf-8"),body);
+                            String token="eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiI0MThjY2Q4Yi0xNjRmLTQ0OWYtODFiZS0zNjMzNWFhOTcyZTEiLCJuYmYiOjE2Njk2OTk2MTIsImV4cCI6MTY2OTcwMzIxMiwiaWF0IjoxNjY5Njk5NjEyLCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.hXPkKuG0WLb7kiPKPtMNVvFkOb0CP0rqBNX1O9qpBAys6OeBohJnG9C1lM7DQPAvNcy4duiU43WKTfSIqsS6_x2-5nSI6UzXnXD0s_Y8-jnOFw9CL-Qe8yqjIoZD96SIb9Puxfxq6KHBIubFyyZQTauORucWecnxBXOs3gKOzEqtFAbpWxQT2fzpJbKaTQcQpuJMV5cN6oVENLpuzjOlIH2EUtQpgWNlWkXYn0TgXIaXH46QasaM2_UYduIyVk2ObB4Fb7UvL0_Z7tVXs1Juf2jZmb5R_0NYlVFSGc7UZBTZAIgJnWYCcyjBWFKIeILUgY8t1AAkEhr5qdxC6Dhf8jxUNTRi1Or4GtAwC__XTsveRs3byQ-a40X1skUTBjzju5GK2cT54N142RerRLA-D8Gzbw6nUCztmlHxoRfmvWuB4GTjp4atw74UbIRf6I92Lu6dfOc4zicPJnNxndI9PUj_JQFTGfW0OZ5YZqgxH81QLKr3hip1itv7KvO_NMmjIEmgM9RQnkhXTNrKGvaqpRD9U-Twzyth4AuyTJ-Ry_OBlhFo7f2LQe_zcLURdG7WYzIu8cdPoea9oxR1pDtDMxUZLewpvH4NZGVg9LhVcK-IbNF3gV1HYbAxVrRprQnR15QekhTiF6L9PeuRgiNggMpN0xudfDyiSq-eUbanMPs";
+                            Request request = new Request.Builder()
+                                    .url(url)
+                                    .addHeader("Fingerprint",uniqueidval)
+                                    .addHeader("ClientInfo",MainActivity.this.InsertMobileparameters(MainActivity.this))
+                                    .addHeader("Authorization","Bearer "+token)
+                                    .post(rb)
+                                    .build();
+                            Response response= null;
+                            try {
+                                response = client.newCall(request).execute();
+                                System.out.println("My Response123 : "+response);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 }
             });
-
-
-        }catch (Exception e){
-            e.printStackTrace();
+            thread.start();
+        }
+        catch (Exception ex)
+        {
+            ex.getStackTrace();
         }
     }
-
     //Method for getting OTP Pop up
     //Using Layout inflater and Dialog
     private void getOTP() {
@@ -214,9 +200,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     public void onClick(View view) {
                         //if length of the otp is less than 3 an alert dialog will be created
                         // else will be proceeded with next iterations
-                        if (getOtp.length() >= 3) {
+                        if (getOtp.length()>=3) {
                             //making the blur layout to be gone
                             blur.setVisibility(View.GONE);
+                            MobileActionlog(MainActivity.this);
                             d.dismiss();
                         } else {
                             AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
@@ -240,7 +227,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             e.printStackTrace();
         }
     }
-
     private void getTimer() {
         try {
             new CountDownTimer(60000, 1000) {
@@ -261,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             e.printStackTrace();
         }
     }
-
     // method for getting Data into the custom list view and the spinner and for the custom compare plans
     // compare plans is being a pop-up window by use of Layout inflater and Pop up window class
     private void callData(){
@@ -370,14 +355,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             e.printStackTrace();
         }
     }
-
     //closing the application
     @Override
     public void onBackPressed() {
         finishAffinity();
     }
-
-
     public void getLocation() {
         try {
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -389,31 +371,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             ex.printStackTrace();
         }
     }
-
     @Override
     public void onLocationChanged(@NonNull List<Location> locations) {
         LocationListener.super.onLocationChanged(locations);
     }
-
     @Override
     public void onFlushComplete(int requestCode) {
         LocationListener.super.onFlushComplete(requestCode);
     }
-
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         //Toast.makeText(getActivity(), "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
     }
-
     @Override
     public void onProviderEnabled(String provider) {
     }
-
     @Override
     public void onProviderDisabled(String provider) {
         //Toast.makeText(getActivity(), "GPS and Internet enabled", Toast.LENGTH_SHORT).show();
     }
-
     @Override
     public void onLocationChanged(final Location location) {
         AsyncTask.execute(new Runnable() {
@@ -424,21 +400,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
-                System.out.println("latlng : "+latitude+","+longitude);
                 SharedPreferences sharedpreferences = getSharedPreferences("LocationPref", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putString("Latitude", String.valueOf(latitude));
                 editor.putString("Longitude", String.valueOf(longitude));
                 editor.commit();
-
                 SharedPreferences sp=getSharedPreferences("LocationPref",MODE_PRIVATE);
                 Latitude=sp.getString("Latitude",null);
                 Longitude=sp.getString("Longitude",null);
-                System.out.println("latlng2 : "+Latitude+","+Longitude);
                 try {
-
                     addresses = geocoder.getFromLocation(latitude, longitude, 1);
-
                     if (addresses != null && addresses.size() > 0) {
                         Address address = addresses.get(0);
                         String addressDet = address.getAddressLine(0);
@@ -446,7 +417,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         SharedPreferences.Editor editorloca = locashared.edit();
                         editorloca.putString(Address1, addressDet);
                         editorloca.commit();
-
                     }
 
                 } catch (IOException ex) {
@@ -457,35 +427,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
         });
     }
-
-
-    public static String getAllCoverageAmounts(Context context){
-        try{
-            JsonArray jsonArray=new JsonArray();
-
-            int[] a=new int[]{250000,300000,500000,1000000,10000000};
-            String[]b=new String[]{"250k","300k","500k","1 Million","10 Million"};
-
-            for(int i=0;i<a.length;i++){
-                JsonObject obj=new JsonObject();
-                obj.addProperty("coverageAmount",a[i]);
-                obj.addProperty("coverageAmountText",b[i]);
-                jsonArray.add(obj);
-            }
-            System.out.println("My Coverage Amount array : "+jsonArray);
-            JsonObject jobj=new JsonObject();
-            jobj.add("getAllCoverageAmount", jsonArray);
-            System.out.println("My Coverage Amount object : "+jobj);
-
-            String myCoverageAmount= jobj.toString();
-            return myCoverageAmount;
-        }catch (Exception e){
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-
     public static String InsertMobileparameters(Context context) {
         try
         {
@@ -501,7 +442,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             String androidOS = Build.VERSION.RELEASE;
             String model = Build.MANUFACTURER + " - " + Build.MODEL;
-            uniqueidval = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
             final String address1 = Latitude+","+Longitude;
             WifiManager wm = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
             String ipaddress = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
@@ -538,7 +478,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             return "";
         }
     }
-
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);

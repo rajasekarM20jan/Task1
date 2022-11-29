@@ -36,7 +36,7 @@
     <string name="alert_for_otp">Please Enter your valid One Time Password</string>
     <string name="ok"><font color="#231cff">OK</font></string>
     <string name="view_more">View more</string>
-    <string name="base_url">https://uat-integrationportal.insure.digital/api/v1/ip/ti</string>
+    <string name="base_url">https://uat-integrationportal.insure.digital/api/v1/ip</string>
     <string name="k_250">250k</string>
     <string name="k_300">300k</string>
     <string name="k_500">500k</string>
