@@ -28,13 +28,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/label"
-        android:layout_margin="@dimen/activity_margin_30dp"
+        android:layout_marginTop="@dimen/activity_margin_25dp"
+        android:layout_marginStart="@dimen/activity_margin_10dp"
+        android:layout_marginEnd="@dimen/activity_margin_10dp"
         android:text="@string/please_enter_otp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"
         android:fontFamily="@font/latinotypeantartidaroundedbold"
-        android:textSize="@dimen/activity_margin_14sp"/>
+        android:textSize="@dimen/activity_margin_10sp"/>
 
     <EditText
         android:id="@+id/editTextInOTP"

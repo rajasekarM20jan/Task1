@@ -28,7 +28,7 @@
 
     <string name="company_name1">Heritage</string>
     <string name="company_name2">GA Insurance</string>
-    <string name="please_enter_otp">Please enter the OTP that you have received to your mobile number <font color="#4353ea">+254 786678567</font> </string>
+    <string name="please_enter_otp">Please enter the OTP that you have received to your mobile number \n <font color="#4353ea">+254 786678567</font> </string>
     <string name="enter_your_otp_here">Enter your OTP here</string>
     <string name="submit">Submit</string>
     <string name="didn_t_receive_otp">Didn\'t Receive OTP?</string>
@@ -44,7 +44,7 @@
     <string name="do_you_smoke_or_chew_tobacco">Do You Smoke or Chew Tobacco?</string>
     <string name="coverage">Coverage</string>
     <string name="term">Term</string>
-    <string name="to_view_accurate_quotes_please_confirm_your_details_below">To View Accurate quotes, please confirm your details below</string>
+    <string name="to_view_accurate_quotes_please_confirm_your_details_below">You are 3 questions away to view the quote details.</string>
     <string name="welcome_back">Welcome Back!</string>
     <string name="view_plans">Get Quotes</string>
 

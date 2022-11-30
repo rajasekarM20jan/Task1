@@ -37,6 +37,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -151,14 +152,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             .readTimeout(120, TimeUnit.SECONDS)
                             .build();
                     JsonObject Details = new JsonObject();
-                    Details.addProperty("oTPID","5d864361-9e3b-4ebf-aaf1-7769eb2e0880");
-                    Details.addProperty("oTP","596726");
-                    String insertString = Details.toString();
+                    Details.addProperty("oTPID","de693561-2b3b-4784-ae9b-6811586b64f7");
+                    Details.addProperty("oTP","543400");
+                    /*String insertString = Details.toString();*/
+                    String insertString="{\"oTPID\":\"518cd0d7-ef28-475e-97ce-2efbc3ed14d3\",\"oTP\":\"944242\"}";
                     RequestBody body = RequestBody.create(JSON, insertString);
                     Request request = new Request.Builder()
                             .url(postURL)
                             .header("fingerprint",uniqueidval)
-                            .header("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIyYzExZGE0OC0wMjljLTRiODgtOTI2Yi1jODViNTI0ZmFmZTMiLCJuYmYiOjE2Njk3MTQ5NDQsImV4cCI6MTY2OTcxODU0NCwiaWF0IjoxNjY5NzE0OTQ0LCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.W7DGRcz2hdFxwXOeGmt9mlRoL_3pzFvCOuMkCCD6penxeIXL1Q3pgibJtY90f-EtcOt64vKpkJK7nUpSKPoEd4mo7ls4jA7KtBHa_HcVKAEJyaR8UwTbOYwUOPlCnqT049Yyu6cf6Mf8WR-7ILkjJWs4Q5iq-RSCF18LDEc7uWsxuLZWVhFhrKeWxquwnK_wRPYrc2_JLUN4d2VV8Sw-lI5u5DeAtT50wgtq3boB01ArVPq8E1QG_LxrzGpyq7tWCtPLVoW3mD2fbThCY5rLXJKO1vd4nTjL523LCafk5PsU2DhIKoCmMelIsJWNBXkWmDaaBlFf8tCxXiYeL71cPLNduHK2FQvx6cpQM5HjUBa5ZmhjOPTnLSdbED4L8hBZedesQmKOgfru3A-6j6SLjQhgoZoN5QurWl2jo3WgwkHP-FXNoxceaLpKPuizn2LC7jFmi-u38-BrcGK1dB3R3cewnN9IQEchKDUs7idCH__gLigOsvhxbhS9xVvjk7Bqk9rqglGmwhvrB3B3tKbr0kDaaNANfBXa9b9rYLU1gUS6S9mbmOkaIDw66eChY8LwcfxLX0wWav_A34aU5ZbX0HTN6aR69fSeIvY7LfVucOh7L718PtbRdXUiHCrh_7RU1949dTIYeLnF86VLW2EkepKTEbCbhwK6BgDfJCJCOFw")
                             .header("clientinfo", "{  \"deviceID\": \"79f59867dce4e2910619d92186c090a9\",  \"deviceID2\": \"79f59867dce4e2910619d92186c090a9\",  \"deviceTimeZone\": \"Gulf Standard Time\",  \"deviceDateTime\": \"23-Nov-2021 08:35 AM\",  \"deviceIpAddress\": \"168.122.1.1\",  \"deviceLatitude\": \"25.1215284\",  \"deviceLongitude\": \"56.3514986\",  \"deviceType\": \"Android\",  \"deviceModel\": \"samsung - SM-A307FN\",  \"deviceVersion\": \"10\",  \"deviceUserID\": \"fGlsj3U6SN\",  \"deviceAppVersion\": \"1.0.8\",  \"deviceIsJailBroken\": true}")
                             .post(body)
                             .build();
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             Log.i(null, staticRes);
                             final JSONObject staticJsonObj = new JSONObject(staticRes);
                             if (staticJsonObj.getInt("rcode") == 200) {
-
+                                System.out.println(staticJsonObj);
                             }else if(staticJsonObj.getInt("rcode") == 500){
                                 JSONArray rmsg=staticJsonObj.getJSONArray("rmsg");
                                 JSONObject index=rmsg.getJSONObject(0);
@@ -375,7 +376,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             Dialog d=new Dialog(MainActivity.this);
             //setting the pop-up layout to Dialog d
             d.setContentView(v);
-            d.getWindow().setLayout(980,980);
+            d.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT);
             d.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.comparison_bg));
             d.create();
             d.setCancelable(false);
@@ -444,20 +445,39 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Dialog d=new Dialog(MainActivity.this);
         //setting the pop-up layout to Dialog d
         d.setContentView(v);
-        d.getWindow().setLayout(980,1300);
+        d.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT);
         d.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.comparison_bg));
         d.create();
         d.setCancelable(false);
         // making layout blur to be visible.
         d.show();
 
-        Spinner termSpinnerInForm,coverageSpinnerInForm,consumptionOfTobaccoSpinner;
+        Spinner termSpinnerInForm,coverageSpinnerInForm;
+        Button getQuotes;
+        RadioGroup rg;
 
         termSpinnerInForm=v.findViewById(R.id.termSpinnerInForm);
 
         coverageSpinnerInForm=v.findViewById(R.id.coverageSpinnerInForm);
 
-        consumptionOfTobaccoSpinner=v.findViewById(R.id.consumptionOfTobaccoSpinner);
+
+        rg=v.findViewById(R.id.tobaccoConsumption);
+
+        getQuotes=v.findViewById(R.id.getQuotesButton);
+
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch(i){
+                    case R.id.radioButtonYes:{
+
+                    }
+                    case R.id.radioButtonNo:{
+
+                    }
+                }
+            }
+        });
 
         String[] term = new String[]{getString(R.string.years_15), getString(R.string.years_20), getString(R.string.years_28)};
 
@@ -479,16 +499,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             e.printStackTrace();
         }
 
-        String option[]=new String[]{"Yes","No"};
-
-        ArrayAdapter arrayAdapter3 = new ArrayAdapter(MainActivity.this, R.layout.custom_spinner_layout, option);
-        try {
-            arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_layout);
-            consumptionOfTobaccoSpinner.setAdapter(arrayAdapter3);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        getQuotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                d.dismiss();
+            }
+        });
     }
 
     private void getTimer() {
