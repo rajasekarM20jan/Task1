@@ -77,7 +77,6 @@ public class CustomComparisonAdapter extends ArrayAdapter {
                 }
                 if(count==2){
                     Toast.makeText(context, "Redirects to the Comparison Activity", Toast.LENGTH_SHORT).show();
-
                 }
             }
         });

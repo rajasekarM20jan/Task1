@@ -16,7 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/lightblue"
+            android:background="@color/blue"
             >
 
         <TextView
@@ -24,12 +24,12 @@
             android:layout_height="wrap_content"
             android:text="@string/to_view_accurate_quotes_please_confirm_your_details_below"
             android:textSize="@dimen/activity_margin_12sp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:layout_marginTop="@dimen/activity_margin_25dp"
             android:layout_marginBottom="@dimen/activity_margin_20dp"
             android:layout_marginStart="@dimen/activity_margin_15dp"
             android:layout_marginEnd="@dimen/activity_margin_15dp"
-            android:fontFamily="@font/latinotypeantartidaroundedbold"
+            android:fontFamily="@font/latinotypeantartidaroundedmedium"
             android:layout_gravity="center"
             android:gravity="center"
             />
@@ -50,11 +50,12 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/activity_margin_5dp"
                 />
-            <Spinner
+            <android.widget.Spinner
                 android:id="@+id/termSpinnerInForm"
                 android:layout_width="match_parent"
                 android:background="@drawable/spinner"
-                android:layout_height="wrap_content"/>
+                android:spinnerMode="dialog"
+                android:layout_height="@dimen/activity_margin_40dp"/>
         </LinearLayout>
 
 
@@ -78,7 +79,7 @@
                 android:id="@+id/coverageSpinnerInForm"
                 android:layout_width="match_parent"
                 android:background="@drawable/spinner"
-                android:layout_height="wrap_content"/>
+                android:layout_height="@dimen/activity_margin_40dp"/>
         </LinearLayout>
 
         <LinearLayout
