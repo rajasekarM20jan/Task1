@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         //initialization of variables and layout fields
         error502=getString(R.string.error_msg);
         uniqueidval = Settings.Secure.getString(MainActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        System.out.println("uniqueID : "+uniqueidval);
         listView = findViewById(R.id.listView1);
         comparePlans = findViewById(R.id.comparePlans);
         blur = findViewById(R.id.blurLayout);
@@ -121,9 +122,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         InsertMobileparameters(MainActivity.this);
 
 
-
-        getAllCoverageAmount();
-
         coverageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -135,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             }
         });
+
+
     }
 
     public void OTPValidate(){
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 public void run() {
 
-                    String postURL = getString(R.string.base_url) +"uad/Account/OTPValidate";
+                    String postURL = "https://uat-integrationportal.insure.digital/api/v1/ip/uad/Account/OTPValidate";
                     final MediaType JSON
                             = MediaType.parse("application/json; charset=utf-8");
                     OkHttpClient client = new OkHttpClient.Builder()
@@ -155,12 +155,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     Details.addProperty("oTPID","de693561-2b3b-4784-ae9b-6811586b64f7");
                     Details.addProperty("oTP","543400");
                     /*String insertString = Details.toString();*/
-                    String insertString="{\"oTPID\":\"518cd0d7-ef28-475e-97ce-2efbc3ed14d3\",\"oTP\":\"944242\"}";
+                    String insertString="{\"oTPID\":\"c82ec92c-26be-49d4-abe7-74931457856c\",\"oTP\":\"368702\"}";
                     RequestBody body = RequestBody.create(JSON, insertString);
                     Request request = new Request.Builder()
                             .url(postURL)
                             .header("fingerprint",uniqueidval)
-                            .header("clientinfo", "{  \"deviceID\": \"79f59867dce4e2910619d92186c090a9\",  \"deviceID2\": \"79f59867dce4e2910619d92186c090a9\",  \"deviceTimeZone\": \"Gulf Standard Time\",  \"deviceDateTime\": \"23-Nov-2021 08:35 AM\",  \"deviceIpAddress\": \"168.122.1.1\",  \"deviceLatitude\": \"25.1215284\",  \"deviceLongitude\": \"56.3514986\",  \"deviceType\": \"Android\",  \"deviceModel\": \"samsung - SM-A307FN\",  \"deviceVersion\": \"10\",  \"deviceUserID\": \"fGlsj3U6SN\",  \"deviceAppVersion\": \"1.0.8\",  \"deviceIsJailBroken\": true}")
+                            .header("clientinfo", InsertMobileparameters(MainActivity.this))
                             .post(body)
                             .build();
                     Response staticResponse = null;
@@ -179,7 +179,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             Log.i(null, staticRes);
                             final JSONObject staticJsonObj = new JSONObject(staticRes);
                             if (staticJsonObj.getInt("rcode") == 200) {
-                                System.out.println(staticJsonObj);
+                                JSONObject jobj=staticJsonObj.getJSONObject("rObj");
+                                String token=jobj.getString("token");
+                                System.out.println(token);
+
+                                SharedPreferences spf=getSharedPreferences("token",MODE_PRIVATE);
+                                SharedPreferences.Editor editor=spf.edit();
+                                editor.putString("token",token);
+                                editor.apply();
+
+                                getAllCoverageAmount();
+
                             }else if(staticJsonObj.getInt("rcode") == 500){
                                 JSONArray rmsg=staticJsonObj.getJSONArray("rmsg");
                                 JSONObject index=rmsg.getJSONObject(0);
@@ -215,8 +225,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Thread thread = new Thread(new Runnable() {
 
             public void run() {
+                /*SharedPreferences sf=getSharedPreferences("token",MODE_PRIVATE);*/
 
-                String postURL = getString(R.string.base_url)+"/ti/Coverage/GetAllCoverageAmount";
+                String deviceData=InsertMobileparameters(MainActivity.this);
+                System.out.println(deviceData);
+                String token="eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIzNGM4M2RhMC1mOTJmLTRiZTEtYWE2MC0yMWYwMjVjYTIzMWUiLCJuYmYiOjE2Njk3OTE2NzIsImV4cCI6MTY2OTc5NTI3MiwiaWF0IjoxNjY5NzkxNjcyLCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.RwHI62CACbTgf7Rr_WW-48RnIawKNgwkqOUlTJz1mzO7CfrFGmbhKwjCSI1gP3IqS8vElpDUyGbLIiwhgygRnHSw7mp2GM5gStuSiVg9I9f3VNMKdqIm6SgUjiMo91EJr4FiakW3Ji8ISZpBJ3JKMdgcbufLCqHsk7OXelweD1RZUu7R2qvjtMpwduhUjtw0msk9dZdVv9Xr0-IK9pMudHNpFP0DOZFf6erHm-5Rw56ucCPiPp3DuCAo10h8B0U6zrNIA2FU2Zkp0I8Mu5IiV9_PdSpVOWUz0-2xsQWGDfH6Ugy5gtay85hzDuVDaVbvCqjWZ9q-0QvOpOo4zazaWxoURRCE7wjYwMsLI7V6ZWP5kSOerhltrs0Bzz3Gip5UBaPc1nQvALEsPEwksHEJ7UhNnrToziFZEuoBDVYoiRuaJa2kNZFvNme8IJ96WGkxNk5NllLUQ_K161k79-t8yXedj129mzcXzp-P5mOMpb9El7fAma43mB244aMzTGJ2GZOw7fMZkoba-_SLNpsoQcY_XswuDDQh7tJYm0embD_r5hFWeyD-OLH1P_pfIhv0zB4_HrM_8BhTDZwDmwEYhmdaIFGUywtU6rMWdWCHUcfwNZL2Ewj_h2YPtRu1vc4Y9zkbKaGMD4aF6Sk0ViHHFuBI4WSWly9ZHdl6h67M8PQ";
+                String postURL = "https://uat-integrationportal.insure.digital/api/v1/ip/ti/Coverage/GetAllCoverageAmount";
                 final MediaType JSON
                         = MediaType.parse("application/json; charset=utf-8");
                 OkHttpClient client = new OkHttpClient.Builder()
@@ -234,9 +248,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 RequestBody body = RequestBody.create(JSON, insertString);
                 Request request = new Request.Builder()
                         .url(postURL)
-                        .header("fingerprint","79f59867dce4e2910619d92186c090a9")
-                        .header("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIyYzExZGE0OC0wMjljLTRiODgtOTI2Yi1jODViNTI0ZmFmZTMiLCJuYmYiOjE2Njk3MTQ5NDQsImV4cCI6MTY2OTcxODU0NCwiaWF0IjoxNjY5NzE0OTQ0LCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.W7DGRcz2hdFxwXOeGmt9mlRoL_3pzFvCOuMkCCD6penxeIXL1Q3pgibJtY90f-EtcOt64vKpkJK7nUpSKPoEd4mo7ls4jA7KtBHa_HcVKAEJyaR8UwTbOYwUOPlCnqT049Yyu6cf6Mf8WR-7ILkjJWs4Q5iq-RSCF18LDEc7uWsxuLZWVhFhrKeWxquwnK_wRPYrc2_JLUN4d2VV8Sw-lI5u5DeAtT50wgtq3boB01ArVPq8E1QG_LxrzGpyq7tWCtPLVoW3mD2fbThCY5rLXJKO1vd4nTjL523LCafk5PsU2DhIKoCmMelIsJWNBXkWmDaaBlFf8tCxXiYeL71cPLNduHK2FQvx6cpQM5HjUBa5ZmhjOPTnLSdbED4L8hBZedesQmKOgfru3A-6j6SLjQhgoZoN5QurWl2jo3WgwkHP-FXNoxceaLpKPuizn2LC7jFmi-u38-BrcGK1dB3R3cewnN9IQEchKDUs7idCH__gLigOsvhxbhS9xVvjk7Bqk9rqglGmwhvrB3B3tKbr0kDaaNANfBXa9b9rYLU1gUS6S9mbmOkaIDw66eChY8LwcfxLX0wWav_A34aU5ZbX0HTN6aR69fSeIvY7LfVucOh7L718PtbRdXUiHCrh_7RU1949dTIYeLnF86VLW2EkepKTEbCbhwK6BgDfJCJCOFw")
-                        .header("clientinfo", "{  \"deviceID\": \"79f59867dce4e2910619d92186c090a9\",  \"deviceID2\": \"79f59867dce4e2910619d92186c090a9\",  \"deviceTimeZone\": \"Gulf Standard Time\",  \"deviceDateTime\": \"23-Nov-2021 08:35 AM\",  \"deviceIpAddress\": \"168.122.1.1\",  \"deviceLatitude\": \"25.1215284\",  \"deviceLongitude\": \"56.3514986\",  \"deviceType\": \"Android\",  \"deviceModel\": \"samsung - SM-A307FN\",  \"deviceVersion\": \"10\",  \"deviceUserID\": \"fGlsj3U6SN\",  \"deviceAppVersion\": \"1.0.8\",  \"deviceIsJailBroken\": true}")
+                        .header("fingerprint",uniqueidval)
+                        .header("Authorization", "Bearer "+token)
+                        .header("clientinfo", deviceData)
                         .post(body)
                         .build();
                 Response staticResponse = null;
@@ -255,32 +269,37 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         Log.i(null, staticRes);
                         final JSONObject staticJsonObj = new JSONObject(staticRes);
                         if (staticJsonObj.getInt("rcode") == 200) {
-                            JSONObject rObj=staticJsonObj.getJSONObject("rObj");
-                            JSONArray getAllCoverageAmount=rObj.getJSONArray("getAllCoverageAmount");
-                            for(int i=0;i<getAllCoverageAmount.length();i++){
-                                JSONObject index=getAllCoverageAmount.getJSONObject(i);
-                                String coverageAmountText=index.getString("coverageAmountText");
-                                int coverageAmount=index.getInt("coverageAmount");
-                                getCoverageAmount.add(new GetAllCoverageAmount(coverageAmountText,coverageAmount));
-                            }
 
-                            coverageArray=new ArrayList<>();
-                            for (int i=0;i<getCoverageAmount.size();i++){
-                                coverageArray.add(getCoverageAmount.get(i).getCoverageAmountText());
-                            }
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ArrayAdapter arrayAdapter1 = new ArrayAdapter(MainActivity.this, R.layout.custom_spinner_layout, coverageArray);
-                                    try {
-                                        arrayAdapter1.setDropDownViewResource(R.layout.custom_spinner_layout);
-                                        MainActivity.this.coverageSpinner.setAdapter(arrayAdapter1);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                            try {
+                                JSONObject rObj = staticJsonObj.getJSONObject("rObj");
+                                JSONArray getAllCoverageAmount = rObj.getJSONArray("getAllCoverageAmount");
+                                for (int i = 0; i < getAllCoverageAmount.length(); i++) {
+                                    JSONObject index = getAllCoverageAmount.getJSONObject(i);
+                                    String coverageAmountText = index.getString("coverageAmountText");
+                                    int coverageAmount = index.getInt("coverageAmount");
+                                    getCoverageAmount.add(new GetAllCoverageAmount(coverageAmountText, coverageAmount));
                                 }
-                            });
+
+                                coverageArray = new ArrayList<>();
+                                for (int i = 0; i < getCoverageAmount.size(); i++) {
+                                    coverageArray.add(getCoverageAmount.get(i).getCoverageAmountText());
+                                }
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ArrayAdapter arrayAdapter1 = new ArrayAdapter(MainActivity.this, R.layout.custom_spinner_layout, coverageArray);
+                                        try {
+                                            arrayAdapter1.setDropDownViewResource(R.layout.custom_spinner_layout);
+                                            MainActivity.this.coverageSpinner.setAdapter(arrayAdapter1);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }else if(staticJsonObj.getInt("rcode") == 500){
                             JSONArray rmsg=staticJsonObj.getJSONArray("rmsg");
                             JSONObject index=rmsg.getJSONObject(0);
@@ -412,7 +431,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         if (getOtp.length()>=3) {
                             //making the blur layout to be gone
                             blur.setVisibility(View.GONE);
-                            OTPValidate();
+                            /*OTPValidate();*/
+                            getAllCoverageAmount();
                             d.dismiss();
                             getForm();
                         } else {
@@ -700,14 +720,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public static String InsertMobileparameters(Context context) {
         try
         {
-            String rooteddevice;
+            boolean rooteddevice;
             if(RootUtil.isDeviceRooted() == true)
             {
-                rooteddevice = "1";
+                rooteddevice = true;
             }
             else
             {
-                rooteddevice = "0";
+                rooteddevice = false;
             }
 
             String androidOS = Build.VERSION.RELEASE;
@@ -716,20 +736,20 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             WifiManager wm = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
             String ipaddress = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
             JsonObject mobileparameters = new JsonObject();
-            mobileparameters.addProperty("imeino1", uniqueidval);
-            mobileparameters.addProperty("imeino2", uniqueidval);
-            mobileparameters.addProperty("timezone", TimeZone.getDefault().getDisplayName());
-            mobileparameters.addProperty("currentdatetime", java.text.DateFormat.getDateTimeInstance().format(new Date()));
-            mobileparameters.addProperty("Address", address1);
-            mobileparameters.addProperty("latitude", Latitude);
-            mobileparameters.addProperty("longitude", Longitude);
-            mobileparameters.addProperty("IpAddress", ipaddress);
-            mobileparameters.addProperty("mobileType", "Android");
-            mobileparameters.addProperty("fireBaseuserid", "123456");
-            mobileparameters.addProperty("mobileModel", model);
-            mobileparameters.addProperty("mobileOSVersion", androidOS);
-            mobileparameters.addProperty("appVersion", "1.0.6");
-            mobileparameters.addProperty("IsJailBroken", rooteddevice);
+            mobileparameters.addProperty("deviceID", uniqueidval);
+            mobileparameters.addProperty("deviceID2", uniqueidval);
+            mobileparameters.addProperty("deviceTimeZone", TimeZone.getDefault().getDisplayName());
+            mobileparameters.addProperty("deviceDateTime", java.text.DateFormat.getDateTimeInstance().format(new Date()));
+            /*mobileparameters.addProperty("deviceIpAddress", address1);*/
+            mobileparameters.addProperty("deviceIpAddress", ipaddress);
+            mobileparameters.addProperty("deviceLatitude", Latitude);
+            mobileparameters.addProperty("deviceLongitude", Longitude);
+            mobileparameters.addProperty("deviceType", "Android");
+            mobileparameters.addProperty("deviceModel", model);
+            mobileparameters.addProperty("deviceVersion", androidOS);
+            mobileparameters.addProperty("deviceUserID", "123456");
+            mobileparameters.addProperty("deviceAppVersion", "1.0.6");
+            mobileparameters.addProperty("deviceIsJailBroken", rooteddevice);
             System.out.println(mobileparameters);
             String insertmobileString = mobileparameters.toString();
 
