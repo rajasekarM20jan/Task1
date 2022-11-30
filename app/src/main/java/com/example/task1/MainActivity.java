@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 public void run() {
 
-                    String postURL = getString(R.string.base_url) +"/uad/Account/Login";
+                    String postURL = getString(R.string.base_url) +"uad/Account/OTPValidate";
                     final MediaType JSON
                             = MediaType.parse("application/json; charset=utf-8");
                     OkHttpClient client = new OkHttpClient.Builder()
