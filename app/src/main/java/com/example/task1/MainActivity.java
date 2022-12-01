@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     ArrayList policyTermArray;
     ArrayList paymentTypeArray;
 
-
     String token1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         setContentView(R.layout.activity_main);
         //initialization of variables and layout fields
         error502=getString(R.string.error_msg);
-        token1="eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIwNTBmZjBkNS1hMzAxLTQ5NjAtYTNiZi1lM2I4NzRhZWJjNzMiLCJuYmYiOjE2Njk4MDU5OTAsImV4cCI6MTY2OTgwOTU5MCwiaWF0IjoxNjY5ODA1OTkwLCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.GQDE_6YrvO7uUq0WyDxC9FLfQhsrRf7XgEOzMa0F_igre-VuUoP9W3wgNrdLYk7XLy_3FbmscxwEv6yLRFyvneb_VKeYub7c_SswQrpzcCOOwgv4ZHxn7vBeLO6_20PzvavpAjFTVP32uPSVnFVV0eq4pe3nbccSA_ARW6E5zpbFWP9oayBb6S4kuG0LaKmwCCbUCbFmKIfbPeHcymQhNGNAu1lq5cR1ECQz7YW6KQk77BGqFlT4f6PX2siWvgUIVUe8yiGeEtVI7kl39IvveD-4iA6Mc5OdCnEB2TEGQXdoGw8sSx81EDCD5ylhiqkCKnGAMsZNYeRMUp8gjz8Hq7KId8_RXlgKXK8HNtpVjZ08ujpIyfogmUmC3PBzfZXdycFrolfptQJhT0RtdbXp_JogeHbrfqNVbQLEWk2OkyT2YgHourDeEuafBysjoIDUqoRmZTE7ofcqu0gUINkOnh-yeNNM-fOSL_BD66_aPKTIGmJwmP25NExd3iC2gFA8iyqGZ4l2_xNjJqm0GECLzftCnMvQUtJj06HAeud_HCPlHs-28oasGpn8XyeEGvJLhkYU_Rkbwxerg22SZ_uJFmA6eKkvzxijzdYAB__N5SVoZ5FjQeOSGP1RIQlI0fLLGzV8EGvN1VEautoinv5SSoZX6JbGuF7dBoXxdpnaTzQ";
+        token1="eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIwMTcxZjhjOS1jY2E4LTQ1MjMtYjBmMy0yZmY3ODU3NmU4ZGEiLCJuYmYiOjE2Njk4Njg2NTYsImV4cCI6MTY2OTg3MjI1NiwiaWF0IjoxNjY5ODY4NjU2LCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.J55JRiYUy-eVZ31BZPWjgrOPy38VDQDsw8Di7whYNPJ8VQRbmjMUU9ZawbxfVC771V-k05gflcSbSW2F8ZRInfjwqjd7ywjz5qIMvORsoGJLUEbQld31QQsNUZ-O6Dh7Vnrs4SrS8n4Rg5Y0KggpI4fTkzxwJAq1-HZQ00mmh-mBLJyZQ7Qv_VxICxuEwdnCAEOW6CWuWGhJON_viu1HGZeie7R0FLciLviMsv-kmWafHckj9v0d0rOXbsBtL3E9gMdtQmccVBn-s2vR1O_c9bhpORG3dgm0jwlFjwhQyv-p0SchhvUXlchN1Om-i8N11VWEecFVCFIFW1_TqJzHTs4h4dTaAvY8b2A53ytfJsjFGjGE5m1ew8-T3dQZQif_IVC6wKoCqyvPecucBYqNGxHhV7WAv_tNWIt2OJEvnGOiK8Z-W2YLNG_13etA0SdL3smqVpFCurdaqFxjPgIO4GhZ6gwIANegIYY0LqxHXK8swisFxPfpJp7FPLWOvQxbwPNNoueRbbNDwIr3ZR8m4wUkDRnYQrn7fIcW3QmiPz3yeKYKcBNB3v6wTMEQB6zwQ4wUmgK2ID7VB6x0NjPmZHmcQWS3z84ZKef1Lj-9zJNRrcwWPEKPz980MapUb1GwRsA-VVK-OtsRYMdWxO8_um_dde79uTO8NTW6vjQdt5s";
         uniqueidval = Settings.Secure.getString(MainActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
         System.out.println("uniqueID : "+uniqueidval);
         listView = findViewById(R.id.listView1);
@@ -131,137 +130,124 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         getPaymentTypeArray=new ArrayList<>();
         callData();
         getOTP();
-
         getLocation();
         InsertMobileparameters(MainActivity.this);
-
-
         coverageSpinner.setOnItemSelectedListener(MainActivity.this);
         policyTermSpinner.setOnItemSelectedListener(MainActivity.this);
         paymentSpinner.setOnItemSelectedListener(MainActivity.this);
-
-
-
     }
 
-
+//method for getting all payout types/payment types
     public void getAllPayout(){
 
-        Thread thread = new Thread(new Runnable() {
+        try {
+            Thread thread = new Thread(new Runnable() {
 
-            public void run() {
-                SharedPreferences sf=getSharedPreferences("token",MODE_PRIVATE);
-
-                String deviceData=InsertMobileparameters(MainActivity.this);
-                System.out.println(deviceData);
-                String token=sf.getString("token","hi");
-                String postURL = "https://uat-integrationportal.insure.digital/api/v1/ip/ti/PayoutType/GetAllPayoutType";
-                final MediaType JSON
-                        = MediaType.parse("application/json; charset=utf-8");
-                OkHttpClient client = new OkHttpClient.Builder()
-                        .connectTimeout(120, TimeUnit.SECONDS)
-                        .writeTimeout(120, TimeUnit.SECONDS)
-                        .readTimeout(120, TimeUnit.SECONDS)
-                        .build();
-                JsonObject Details = new JsonObject();
-                String insertString = Details.toString();
+                public void run() {
+                    SharedPreferences sf = getSharedPreferences("token", MODE_PRIVATE);
+                    String deviceData = InsertMobileparameters(MainActivity.this);
+                    System.out.println(deviceData);
+                    String token = sf.getString("token", "hi");
+                    String postURL = "https://uat-integrationportal.insure.digital/api/v1/ip/ti/PayoutType/GetAllPayoutType";
+                    final MediaType JSON
+                            = MediaType.parse("application/json; charset=utf-8");
+                    OkHttpClient client = new OkHttpClient.Builder()
+                            .connectTimeout(120, TimeUnit.SECONDS)
+                            .writeTimeout(120, TimeUnit.SECONDS)
+                            .readTimeout(120, TimeUnit.SECONDS)
+                            .build();
+                    JsonObject Details = new JsonObject();
+                    String insertString = Details.toString();
 //        String insertString = "{\n" +
 //                "  \"quotationID\": \"IQ-AAA2569\",\n" +
 //                "  \"productID\": \"85\",\n" +
 //                "  \"vehicleTypeID\": \"27\"\n" +
 //                "}";
-                RequestBody body = RequestBody.create(JSON, insertString);
-                Request request = new Request.Builder()
-                        .url(postURL)
-                        .header("fingerprint",uniqueidval)
-                        .header("Authorization", "Bearer "+token)
-                        .header("clientinfo", deviceData)
-                        .post(body)
-                        .build();
-                Response staticResponse = null;
-                try {
-                    staticResponse = client.newCall(request).execute();
-                    int statuscode = staticResponse.code();
-                    if (statuscode == 401) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                return;
-                            }
-                        });
-                    } else {
-                        String staticRes = staticResponse.body().string();
-                        Log.i(null, staticRes);
-                        final JSONObject staticJsonObj = new JSONObject(staticRes);
-                        if (staticJsonObj.getInt("rcode") == 200) {
-
-                            try {
-                                JSONObject rObj = staticJsonObj.getJSONObject("rObj");
-                                JSONArray getAllCoverageAmount = rObj.getJSONArray("getAllPayOutType");
-                                for (int i = 0; i < getAllCoverageAmount.length(); i++) {
-                                    JSONObject index = getAllCoverageAmount.getJSONObject(i);
-                                    String payoutTypeText = index.getString("payoutTypeName");
-                                    int payoutTypeID = index.getInt("payoutTypeID");
-                                    getPaymentTypeArray.add(new PaymentType(payoutTypeText, payoutTypeID));
+                    RequestBody body = RequestBody.create(JSON, insertString);
+                    Request request = new Request.Builder()
+                            .url(postURL)
+                            .header("fingerprint", uniqueidval)
+                            .header("Authorization", "Bearer " + token1)
+                            .header("clientinfo", deviceData)
+                            .post(body)
+                            .build();
+                    Response staticResponse = null;
+                    try {
+                        staticResponse = client.newCall(request).execute();
+                        int statuscode = staticResponse.code();
+                        if (statuscode == 401) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    return;
                                 }
-
-
-                                for (int i = 0; i < getPaymentTypeArray.size(); i++) {
-                                    paymentTypeArray.add(getPaymentTypeArray.get(i).getPayoutTypeName());
+                            });
+                        } else {
+                            String staticRes = staticResponse.body().string();
+                            Log.i(null, staticRes);
+                            final JSONObject staticJsonObj = new JSONObject(staticRes);
+                            if (staticJsonObj.getInt("rcode") == 200) {
+                                try {
+                                    JSONObject rObj = staticJsonObj.getJSONObject("rObj");
+                                    JSONArray getAllCoverageAmount = rObj.getJSONArray("getAllPayOutType");
+                                    for (int i = 0; i < getAllCoverageAmount.length(); i++) {
+                                        JSONObject index = getAllCoverageAmount.getJSONObject(i);
+                                        String payoutTypeText = index.getString("payoutTypeName");
+                                        int payoutTypeID = index.getInt("payoutTypeID");
+                                        getPaymentTypeArray.add(new PaymentType(payoutTypeText, payoutTypeID));
+                                    }
+                                    for (int i = 0; i < getPaymentTypeArray.size(); i++) {
+                                        paymentTypeArray.add(getPaymentTypeArray.get(i).getPayoutTypeName());
+                                    }
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, R.layout.custom_spinner_layout, paymentTypeArray);
+                                            try {
+                                                arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_layout);
+                                                MainActivity.this.paymentSpinner.setAdapter(arrayAdapter);
+                                                getForm();
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-
+                            } else if (staticJsonObj.getInt("rcode") == 500) {
+                                JSONArray rmsg = staticJsonObj.getJSONArray("rmsg");
+                                JSONObject index = rmsg.getJSONObject(0);
+                                String errorText = index.getString("errorText");
+                                String trnId = staticJsonObj.getString("trnID");
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, R.layout.custom_spinner_layout, paymentTypeArray);
-                                        try {
-                                            arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_layout);
-                                            MainActivity.this.paymentSpinner.setAdapter(arrayAdapter);
-
-                                            getForm();
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
+                                        getAlertDialog(errorText, trnId);
                                     }
                                 });
-
-                            }catch (Exception e){
-                                e.printStackTrace();
+                            } else {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getAlertDialog(error502, "AKI-00015");
+                                    }
+                                });
                             }
-                        }else if(staticJsonObj.getInt("rcode") == 500){
-                            JSONArray rmsg=staticJsonObj.getJSONArray("rmsg");
-                            JSONObject index=rmsg.getJSONObject(0);
-                            String errorText=index.getString("errorText");
-                            String trnId=staticJsonObj.getString("trnID");
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getAlertDialog(errorText,trnId);
-                                }
-                            });
-
-                        }else{
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getAlertDialog(error502,"AKI-00015");
-                                }
-                            });
-
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }catch (Exception e){
-                    e.printStackTrace();
                 }
-
-            }
-        });
-        thread.start();
-
+            });
+            thread.start();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
-
+//method of getting all policy terms.
     public void getAllTerm(){
-
+        try{
             Thread thread = new Thread(new Runnable() {
 
                 public void run() {
@@ -289,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     Request request = new Request.Builder()
                             .url(postURL)
                             .header("fingerprint",uniqueidval)
-                            .header("Authorization", "Bearer "+token)
+                            .header("Authorization", "Bearer "+token1)
                             .header("clientinfo", deviceData)
                             .post(body)
                             .build();
@@ -371,11 +357,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 }
             });
             thread.start();
-
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
+        }
+//method for validating otp
     public void OTPValidate(){
-
+        try{
             Thread thread = new Thread(new Runnable() {
 
                 public void run() {
@@ -392,7 +380,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     Details.addProperty("oTPID","de693561-2b3b-4784-ae9b-6811586b64f7");
                     Details.addProperty("oTP","543400");
                     /*String insertString = Details.toString();*/
-                    String insertString="{\"oTPID\":\"339e9f40-8ab3-4aeb-bddc-181cbeec585b\",\"oTP\":\"795188\"}";
+                    String insertString="{\"oTPID\":\"96f255a1-aa72-4002-9fea-db33e8249430\",\"oTP\":\"097827\"}";
                     RequestBody body = RequestBody.create(JSON, insertString);
                     Request request = new Request.Builder()
                             .url(postURL)
@@ -454,11 +442,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 }
             });
             thread.start();
-
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
+        }
+//method for getting all coverage amount
     public void getAllCoverageAmount(){
-
+        try{
         Thread thread = new Thread(new Runnable() {
 
             public void run() {
@@ -485,7 +475,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 Request request = new Request.Builder()
                         .url(postURL)
                         .header("fingerprint",uniqueidval)
-                        .header("Authorization", "Bearer "+token)
+                        .header("Authorization", "Bearer "+token1)
                         .header("clientinfo", deviceData)
                         .post(body)
                         .build();
@@ -568,10 +558,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             }
         });
         thread.start();
-
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
-
+//method for AlertDialog
     private void getAlertDialog(String errorText, String trnId) {
+        try{
         AlertDialog.Builder dialog=new AlertDialog.Builder(MainActivity.this);
         dialog.setCancelable(false);
         dialog.setMessage(errorText+"\n"+trnId);
@@ -582,6 +575,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             }
         });
         dialog.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /* public void MobileActionlog(Context context)
@@ -624,7 +620,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
              ex.getStackTrace();
          }
      }*/
-    //Method for getting OTP Pop up
+    //Method for getting OTP Pop-up layout
     //Using Layout inflater and Dialog
     private void getOTP() {
         try{
@@ -670,7 +666,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                         if (getOtp.length()>=3) {
                             //making the blur layout to be gone
                             blur.setVisibility(View.GONE);
-                            OTPValidate();
+                            /*OTPValidate();*/
                             getAllCoverageAmount();
                             d.dismiss();
 
@@ -696,8 +692,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             e.printStackTrace();
         }
     }
-
+    //Method for getting form pop-up layout
+    //Using Layout inflater and Dialog
     private void getForm() {
+        try{
         LayoutInflater inflater=(LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         //inflating the custom layout otp_pop_up
         View v=inflater.inflate(R.layout.form_pop_up,null,false);
@@ -765,8 +763,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 d.dismiss();
             }
         });
+    }catch (Exception e){
+        e.printStackTrace();
     }
-
+    }
+    //Method for getting the timer for otp pop-up
     private void getTimer() {
         try {
             new CountDownTimer(60000, 1000) {
@@ -868,6 +869,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     public void onBackPressed() {
         finishAffinity();
     }
+    //method for getting location values.
     public void getLocation() {
         try {
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -900,6 +902,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     }
     @Override
     public void onLocationChanged(final Location location) {
+        try{
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -934,7 +937,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
             }
         });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
+    //method for getting all the data for header clientinfo.
     public static String InsertMobileparameters(Context context) {
         try
         {
@@ -990,9 +997,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
     }
-
+    //over ride method for spinner/dropdown
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        try{
+        //using switch case to get the values from respective spinners with its respective ID.
         switch (adapterView.getId()){
             case R.id.coverageSpinner:{
                 System.out.println("Spinner-Coverage "+adapterView.getSelectedItem());
@@ -1015,8 +1024,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 break;
             }
         }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
-
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
