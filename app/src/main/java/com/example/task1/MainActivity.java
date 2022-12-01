@@ -377,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     Details.addProperty("oTPID","de693561-2b3b-4784-ae9b-6811586b64f7");
                     Details.addProperty("oTP","543400");
                     /*String insertString = Details.toString();*/
-                    String insertString="{\"oTPID\":\"56b7e8b6-5a92-4fe9-b8ef-187e647b83ac\",\"oTP\":\"578594\"}";
+                    String insertString="{\"oTPID\":\"acba8ffa-066c-470e-b98b-89daa0254763\",\"oTP\":\"011639\"}";
                     RequestBody body = RequestBody.create(JSON, insertString);
                     Request request = new Request.Builder()
                             .url(postURL)
@@ -576,7 +576,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             e.printStackTrace();
         }
     }
-
     /* public void MobileActionlog(Context context)
      {
          try {
@@ -898,8 +897,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         //Toast.makeText(getActivity(), "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
     }
     @Override
-    public void onProviderEnabled(String provider) {
-    }
+    public void onProviderEnabled(String provider) {}
     @Override
     public void onProviderDisabled(String provider) {
         //Toast.makeText(getActivity(), "GPS and Internet enabled", Toast.LENGTH_SHORT).show();
@@ -1033,7 +1031,5 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         }
     }
     @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
+    public void onNothingSelected(AdapterView<?> adapterView) {}
 }
