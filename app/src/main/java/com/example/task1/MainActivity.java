@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -70,9 +71,6 @@ import model.GetAllCoverageAmount;
 import model.ListModel;
 import model.PaymentType;
 import model.Term;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -80,12 +78,13 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements LocationListener, AdapterView.OnItemSelectedListener {
+
+    //declaration of variables and layout fields
     private static String UniqueID;
     private static String Latitude;
     private static String Longitude;
     private static String Address1;
     LocationManager locationManager;
-    //declaration of variables and layout fields
     TextView comparePlans,didNotReceive,resendOtp,timerTextView;
     ListView listView;
     ImageView close;
@@ -103,15 +102,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     ArrayList<PaymentType> getPaymentTypeArray;
     ArrayList policyTermArray;
     ArrayList paymentTypeArray;
+    ProgressDialog pd;
 
-    String token1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //initialization of variables and layout fields
         error502=getString(R.string.error_msg);
-        token1="eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4NTcwMzk5QzM0MjlDMUFDNjk3MTk5MzZCNDI3Q0Y5OUU2MDExQUQiLCJ0eXAiOiJKV1QifQ.eyJzZXNzaW9uSUQiOiIwMTcxZjhjOS1jY2E4LTQ1MjMtYjBmMy0yZmY3ODU3NmU4ZGEiLCJuYmYiOjE2Njk4Njg2NTYsImV4cCI6MTY2OTg3MjI1NiwiaWF0IjoxNjY5ODY4NjU2LCJpc3MiOiJCQzcyRTczQUNBQkY0NzcyOEE3RUQ2MTlDREM3OUMwMSIsImF1ZCI6IjRENTIxMkI3QzA3NTQ0OTJCNjZDRDNCRDM1QzFGNzJBIn0.J55JRiYUy-eVZ31BZPWjgrOPy38VDQDsw8Di7whYNPJ8VQRbmjMUU9ZawbxfVC771V-k05gflcSbSW2F8ZRInfjwqjd7ywjz5qIMvORsoGJLUEbQld31QQsNUZ-O6Dh7Vnrs4SrS8n4Rg5Y0KggpI4fTkzxwJAq1-HZQ00mmh-mBLJyZQ7Qv_VxICxuEwdnCAEOW6CWuWGhJON_viu1HGZeie7R0FLciLviMsv-kmWafHckj9v0d0rOXbsBtL3E9gMdtQmccVBn-s2vR1O_c9bhpORG3dgm0jwlFjwhQyv-p0SchhvUXlchN1Om-i8N11VWEecFVCFIFW1_TqJzHTs4h4dTaAvY8b2A53ytfJsjFGjGE5m1ew8-T3dQZQif_IVC6wKoCqyvPecucBYqNGxHhV7WAv_tNWIt2OJEvnGOiK8Z-W2YLNG_13etA0SdL3smqVpFCurdaqFxjPgIO4GhZ6gwIANegIYY0LqxHXK8swisFxPfpJp7FPLWOvQxbwPNNoueRbbNDwIr3ZR8m4wUkDRnYQrn7fIcW3QmiPz3yeKYKcBNB3v6wTMEQB6zwQ4wUmgK2ID7VB6x0NjPmZHmcQWS3z84ZKef1Lj-9zJNRrcwWPEKPz980MapUb1GwRsA-VVK-OtsRYMdWxO8_um_dde79uTO8NTW6vjQdt5s";
         uniqueidval = Settings.Secure.getString(MainActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
         System.out.println("uniqueID : "+uniqueidval);
         listView = findViewById(R.id.listView1);
@@ -128,15 +126,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         coverageArray = new ArrayList<>();
         paymentTypeArray=new ArrayList<>();
         getPaymentTypeArray=new ArrayList<>();
+        //calling the initial methods of the layout
         callData();
         getOTP();
         getLocation();
-        InsertMobileparameters(MainActivity.this);
         coverageSpinner.setOnItemSelectedListener(MainActivity.this);
         policyTermSpinner.setOnItemSelectedListener(MainActivity.this);
         paymentSpinner.setOnItemSelectedListener(MainActivity.this);
     }
-
 //method for getting all payout types/payment types
     public void getAllPayout(){
 
@@ -167,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     Request request = new Request.Builder()
                             .url(postURL)
                             .header("fingerprint", uniqueidval)
-                            .header("Authorization", "Bearer " + token1)
+                            .header("Authorization", "Bearer " + token)
                             .header("clientinfo", deviceData)
                             .post(body)
                             .build();
@@ -275,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     Request request = new Request.Builder()
                             .url(postURL)
                             .header("fingerprint",uniqueidval)
-                            .header("Authorization", "Bearer "+token1)
+                            .header("Authorization", "Bearer "+token)
                             .header("clientinfo", deviceData)
                             .post(body)
                             .build();
@@ -380,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     Details.addProperty("oTPID","de693561-2b3b-4784-ae9b-6811586b64f7");
                     Details.addProperty("oTP","543400");
                     /*String insertString = Details.toString();*/
-                    String insertString="{\"oTPID\":\"96f255a1-aa72-4002-9fea-db33e8249430\",\"oTP\":\"097827\"}";
+                    String insertString="{\"oTPID\":\"56b7e8b6-5a92-4fe9-b8ef-187e647b83ac\",\"oTP\":\"578594\"}";
                     RequestBody body = RequestBody.create(JSON, insertString);
                     Request request = new Request.Builder()
                             .url(postURL)
@@ -475,7 +472,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 Request request = new Request.Builder()
                         .url(postURL)
                         .header("fingerprint",uniqueidval)
-                        .header("Authorization", "Bearer "+token1)
+                        .header("Authorization", "Bearer "+token)
                         .header("clientinfo", deviceData)
                         .post(body)
                         .build();
@@ -666,9 +663,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                         if (getOtp.length()>=3) {
                             //making the blur layout to be gone
                             blur.setVisibility(View.GONE);
+                            d.dismiss();
+                            pd=new ProgressDialog(MainActivity.this);
+                            pd.setCancelable(false);
+                            pd.setMessage(getString(R.string.please_wait));
+                            pd.show();
                             /*OTPValidate();*/
                             getAllCoverageAmount();
-                            d.dismiss();
 
                         } else {
                             AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
@@ -696,6 +697,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     //Using Layout inflater and Dialog
     private void getForm() {
         try{
+            if(pd.isShowing()){
+                pd.dismiss();
+            }
         LayoutInflater inflater=(LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         //inflating the custom layout otp_pop_up
         View v=inflater.inflate(R.layout.form_pop_up,null,false);

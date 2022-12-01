@@ -16,15 +16,6 @@
     <string name="payment_type">Payment Type</string>
     <string name="policy_term_in_filter">Policy Term</string>
     <string name="coverage_in_filter">Coverage</string>
-    <string name="million_10">10 Million</string>
-    <string name="million_1">1 Million</string>
-    <string name="monthly">Monthly</string>
-    <string name="quarterly">Quarterly</string>
-    <string name="yearly">Yearly</string>
-    <string name="years_28">28 Years</string>
-    <string name="years_20">20 Years</string>
-    <string name="years_15">15 Years</string>
-    <string name="close"><font color="#ff0300">X</font></string>
 
     <string name="company_name1">Heritage</string>
     <string name="company_name2">GA Insurance</string>
@@ -36,17 +27,13 @@
     <string name="alert_for_otp">Please Enter your valid One Time Password</string>
     <string name="ok"><font color="#231cff">OK</font></string>
     <string name="view_more">View more</string>
-    <string name="base_url">https://uat-integrationportal.insure.digital/api/v1/ip</string>
-    <string name="k_250">250k</string>
-    <string name="k_300">300k</string>
-    <string name="k_500">500k</string>
     <string name="error_msg">Your Request has some technical issues. An incident is created and escalated to the Technical support team. You will be contacted soon for issue resolution.</string>
     <string name="do_you_smoke_or_chew_tobacco">Do You Smoke or Chew Tobacco?</string>
     <string name="coverage">Coverage</string>
     <string name="term">Term</string>
     <string name="to_view_accurate_quotes_please_confirm_your_details_below">You are 3 questions away to view the quote details.</string>
-    <string name="welcome_back">Welcome Back!</string>
     <string name="view_plans">Get Quotes</string>
+    <string name="please_wait">Please wait while we load the Best Quotes for you.</string>
 
 
 </resources>
